@@ -1,0 +1,23 @@
+{% load i18n %}
+
+{% if payment_info %}
+    <dl class="dl-horizontal">
+        {% if "id" in payment_info %}
+            <dt>{% trans "ID" %}</dt>
+            <dd>{{ payment_info.id }}</dd>
+        {% endif %}
+        {% if "paymentBrand" in payment_info %}
+            <dt>{% trans "Payment Brand" %}</dt>
+            <dd>{{ payment_info.paymentBrand }}</dd>
+        {% endif %}
+        {% if "result" in payment_info %}
+            <dt>{% trans "Result Code" %}</dt>
+            <dd>{{ payment_info.result.code }} ({{ payment_info.result.description }})</dd>
+        {% endif %}
+        {% if "descriptor" in payment_info %}
+            <dt>{% trans "Descriptor" %}</dt>
+            <dd>{{ payment_info.descriptor }}</dd>
+        {% endif %}
+
+    </dl>
+{% endif %}

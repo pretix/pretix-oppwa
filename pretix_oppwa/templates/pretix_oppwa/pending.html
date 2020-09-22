@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load eventurl %}
+
+{% if payment.state == "pending" %}
+    <p>{% blocktrans trimmed %}
+        We're waiting for an answer from the payment provider regarding your payment. Please contact us if this
+        takes more than a few days.
+    {% endblocktrans %}</p>
+{% else %}
+    <p>{% blocktrans trimmed %}
+        The payment transaction could not be completed for the following reason:
+    {% endblocktrans %}
+        <br/>
+        {% if payment_info and payment_info.result %}
+            {{ payment_info.result.code }}: {{ payment_info.result.description }}
+        {% else %}
+            {% trans "Unknown reason" %}
+        {% endif %}
+    </p>
+{% endif %}

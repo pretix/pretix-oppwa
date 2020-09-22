@@ -1,0 +1,3 @@
+recursive-include pretix_oppwa/static *
+recursive-include pretix_oppwa/templates *
+recursive-include pretix_oppwa/locale *
