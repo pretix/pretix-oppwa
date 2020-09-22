@@ -108,7 +108,7 @@ class OPPWAMethod(BasePaymentProvider):
         else:
             return 'https://oppwa.com'
 
-    def _init_api(self):
+    def _init_api(self, testmode):
         s = requests.Session()
         s.headers = {
             'Authorization': 'Bearer {}'.format(self.settings.access_token)
@@ -191,7 +191,7 @@ class OPPWAMethod(BasePaymentProvider):
         if not payment_info:
             raise PaymentException(_('No payment information found.'))
 
-        s = self._init_api()
+        s = self._init_api(refund.order.testmode)
         data = {
             'entityId': self.get_entity_id(refund.order.testmode),
             'amount': str(refund.amount),
@@ -219,7 +219,7 @@ class OPPWAMethod(BasePaymentProvider):
         self.process_result(refund, payment_info)
 
     def create_checkout(self, payment: OrderPayment):
-        s = self._init_api()
+        s = self._init_api(payment.order.testmode)
         data = {
             'entityId': self.get_entity_id(payment.order.testmode),
             'amount': str(payment.amount),

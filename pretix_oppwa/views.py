@@ -79,7 +79,7 @@ class ReturnView(OPPWAOrderView, View):
                                            'contact the event organizer to check if your payment was successful.'))
             return self._redirect_to_order()
 
-        s = self.pprov._init_api()
+        s = self.pprov._init_api(self.payment.order.testmode)
 
         try:
             r = s.get(
