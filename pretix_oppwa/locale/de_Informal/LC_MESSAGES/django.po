@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-07 19:01+0100\n"
+"POT-Creation-Date: 2021-02-04 13:29+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Gross\n"
 "Language-Team: \n"
@@ -10,3 +10,638 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: pretix_oppwa/__init__.py:16
+msgid "OPPWA payments for pretix"
+msgstr "OPPWA Zahlungen für pretix"
+
+#: pretix_oppwa/__init__.py:18
+msgid "This plugin allows you to use OPPWA based payment providers"
+msgstr "Dieses Plugin erlaubt es OPPWA-basierende Zahlungsdienstleister zu verwenden"
+
+#: pretix_oppwa/payment.py:26
+msgid "OPPWA"
+msgstr "OPPWA"
+
+#: pretix_oppwa/payment.py:42
+msgid "Access Token"
+msgstr "Access Token"
+
+#: pretix_oppwa/payment.py:47
+msgid "Endpoint"
+msgstr "Endpunkt"
+
+#: pretix_oppwa/payment.py:57 pretix_oppwa/paymentmethods.py:784
+msgid "Entity ID"
+msgstr "Entity ID"
+
+#: pretix_oppwa/payment.py:58 pretix_oppwa/paymentmethods.py:11
+#: pretix_oppwa/paymentmethods.py:12
+msgid "Credit card"
+msgstr "Kreditkarte"
+
+#: pretix_oppwa/payment.py:58
+msgid "All Payment Methods"
+msgstr "Alle Zahlungsmethoden"
+
+#: pretix_oppwa/payment.py:192
+msgid "No payment information found."
+msgstr "Keine Zahlungsinformationen gefunden."
+
+#: pretix_oppwa/payment.py:213 pretix_oppwa/payment.py:242
+msgid ""
+"We had trouble communicating with the payment service. Please try again and "
+"get in touch with us if this problem persists."
+msgstr "Es gab Probleme bei der Kommunikation mit den Zahlungsdienstleister. "
+"Bitte versuche es erneut. Wenn der Fehler weiterhin auftreten, wende "
+"dich bitte an den Support."
+
+#: pretix_oppwa/paymentmethods.py:17 pretix_oppwa/paymentmethods.py:18
+msgid "Affirm"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:23 pretix_oppwa/paymentmethods.py:24
+msgid "Airplus"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:29 pretix_oppwa/paymentmethods.py:30
+msgid "Alia"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:35 pretix_oppwa/paymentmethods.py:36
+msgid "Alia Debit"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:41 pretix_oppwa/paymentmethods.py:42
+msgid "American Express"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:47 pretix_oppwa/paymentmethods.py:48
+msgid "Apple Pay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:53 pretix_oppwa/paymentmethods.py:54
+msgid "Argencard"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:59 pretix_oppwa/paymentmethods.py:60
+msgid "BCMC"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:65 pretix_oppwa/paymentmethods.py:66
+msgid "Carnet"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:71 pretix_oppwa/paymentmethods.py:72
+msgid "Carte Bancaire"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:77 pretix_oppwa/paymentmethods.py:78
+msgid "Carte Bleue"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:83 pretix_oppwa/paymentmethods.py:84
+msgid "Cenco Sud"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:89 pretix_oppwa/paymentmethods.py:90
+msgid "Dankort"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:95 pretix_oppwa/paymentmethods.py:96
+msgid "Diners Club"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:101 pretix_oppwa/paymentmethods.py:102
+msgid "Discovery"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:107 pretix_oppwa/paymentmethods.py:108
+msgid "ELO"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:113 pretix_oppwa/paymentmethods.py:114
+#: pretix_oppwa/paymentmethods.py:119
+msgid "3 Oney Installments"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:120
+msgid "3 Oney Installments (No Fees)"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:125 pretix_oppwa/paymentmethods.py:126
+#: pretix_oppwa/paymentmethods.py:131
+msgid "4 Oney Installments"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:132
+msgid "4 Oney Installments (No Fees)"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:137 pretix_oppwa/paymentmethods.py:138
+msgid "Google Pay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:143 pretix_oppwa/paymentmethods.py:144
+msgid "Hipercard"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:149 pretix_oppwa/paymentmethods.py:150
+msgid "JCB"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:155 pretix_oppwa/paymentmethods.py:156
+msgid "MADA"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:161 pretix_oppwa/paymentmethods.py:162
+msgid "Maestro"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:167 pretix_oppwa/paymentmethods.py:168
+msgid "Mastercard"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:173 pretix_oppwa/paymentmethods.py:174
+msgid "Mastercard Debit"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:179 pretix_oppwa/paymentmethods.py:180
+msgid "Mercado Livre"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:185 pretix_oppwa/paymentmethods.py:186
+msgid "Naranja"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:191 pretix_oppwa/paymentmethods.py:192
+msgid "Nativa"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:197 pretix_oppwa/paymentmethods.py:198
+msgid "Servired"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:203 pretix_oppwa/paymentmethods.py:204
+msgid "Tarjeta Shopping"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:209 pretix_oppwa/paymentmethods.py:210
+msgid "TCard"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:215 pretix_oppwa/paymentmethods.py:216
+msgid "TCard Debit"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:221 pretix_oppwa/paymentmethods.py:222
+msgid "UnionPay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:227 pretix_oppwa/paymentmethods.py:228
+msgid "UnionPay (SMS)"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:233 pretix_oppwa/paymentmethods.py:234
+msgid "VISA"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:239 pretix_oppwa/paymentmethods.py:240
+msgid "VISA Debit"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:245 pretix_oppwa/paymentmethods.py:246
+msgid "VISA Electron"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:251 pretix_oppwa/paymentmethods.py:252
+msgid "VPay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:257 pretix_oppwa/paymentmethods.py:258
+msgid "Afterpay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:263 pretix_oppwa/paymentmethods.py:264
+msgid "Alipay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:269 pretix_oppwa/paymentmethods.py:270
+msgid "Apostar"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:275 pretix_oppwa/paymentmethods.py:276
+msgid "Astropay Streamline Cash"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:281 pretix_oppwa/paymentmethods.py:282
+msgid "Astropay Streamline OT"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:287 pretix_oppwa/paymentmethods.py:288
+msgid "Baloto"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:293 pretix_oppwa/paymentmethods.py:294
+msgid "Bancolombia"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:299 pretix_oppwa/paymentmethods.py:300
+msgid "BBVA Continental"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:305 pretix_oppwa/paymentmethods.py:306
+msgid "BCP"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:311 pretix_oppwa/paymentmethods.py:312
+msgid "Bevalida"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:317 pretix_oppwa/paymentmethods.py:318
+msgid "Boton PSE"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:323 pretix_oppwa/paymentmethods.py:324
+msgid "Caja Arequipa"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:329 pretix_oppwa/paymentmethods.py:330
+msgid "Caja Cusco"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:335 pretix_oppwa/paymentmethods.py:336
+msgid "Caja Huancayo"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:341 pretix_oppwa/paymentmethods.py:342
+msgid "Caja ICA"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:347 pretix_oppwa/paymentmethods.py:348
+msgid "Caja Piura"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:353 pretix_oppwa/paymentmethods.py:354
+msgid "Caja Tacna"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:359 pretix_oppwa/paymentmethods.py:360
+msgid "Caja Trujillo"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:365 pretix_oppwa/paymentmethods.py:366
+msgid "Cashu"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:371 pretix_oppwa/paymentmethods.py:372
+msgid "China Union Pay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:377 pretix_oppwa/paymentmethods.py:378
+msgid "Daopay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:383 pretix_oppwa/paymentmethods.py:384
+msgid "Dimonex"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:389 pretix_oppwa/paymentmethods.py:390
+msgid "Efecty"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:395 pretix_oppwa/paymentmethods.py:396
+msgid "Enterpay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:401 pretix_oppwa/paymentmethods.py:402
+msgid "Gana"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:407 pretix_oppwa/paymentmethods.py:408
+msgid "Ikanooi Se"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:413 pretix_oppwa/paymentmethods.py:414
+msgid "Inicis"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:419 pretix_oppwa/paymentmethods.py:420
+msgid "Interbank"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:425 pretix_oppwa/paymentmethods.py:426
+msgid "Klarna BillPay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:431 pretix_oppwa/paymentmethods.py:432
+msgid "Klarna Pay Later"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:437 pretix_oppwa/paymentmethods.py:438
+msgid "Klarna Pay Now"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:443 pretix_oppwa/paymentmethods.py:444
+msgid "Klarna Slice It"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:449 pretix_oppwa/paymentmethods.py:450
+msgid "Masterpass"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:455 pretix_oppwa/paymentmethods.py:456
+msgid "MBWAY"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:461 pretix_oppwa/paymentmethods.py:462
+msgid "Moneybookers"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:467 pretix_oppwa/paymentmethods.py:468
+msgid "Moneysafe"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:473 pretix_oppwa/paymentmethods.py:474
+msgid "Nequi"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:479 pretix_oppwa/paymentmethods.py:480
+msgid "Onecard"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:485 pretix_oppwa/paymentmethods.py:486
+msgid "Pago Efectivo"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:491 pretix_oppwa/paymentmethods.py:492
+msgid "Pago Facil"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:497 pretix_oppwa/paymentmethods.py:498
+msgid "Paybox"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:503 pretix_oppwa/paymentmethods.py:504
+msgid "paydirekt"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:509 pretix_oppwa/paymentmethods.py:510
+msgid "Paynet"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:515
+msgid "Payolution ELV"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:516
+msgid "Payolution_ELV"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:521 pretix_oppwa/paymentmethods.py:522
+msgid "Payolution INS"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:527 pretix_oppwa/paymentmethods.py:528
+msgid "Payolution Invoice"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:533 pretix_oppwa/paymentmethods.py:534
+msgid "PayPal"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:539 pretix_oppwa/paymentmethods.py:540
+msgid "Paysafecard"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:545 pretix_oppwa/paymentmethods.py:546
+msgid "Paytrail"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:551 pretix_oppwa/paymentmethods.py:552
+msgid "PF Karte Direct"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:557 pretix_oppwa/paymentmethods.py:558
+msgid "Przelewy24"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:563 pretix_oppwa/paymentmethods.py:564
+msgid "Punto Red"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:569 pretix_oppwa/paymentmethods.py:570
+msgid "Qiwi"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:575 pretix_oppwa/paymentmethods.py:576
+msgid "Rapi Pago"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:581 pretix_oppwa/paymentmethods.py:582
+msgid "Ratenkauf"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:587 pretix_oppwa/paymentmethods.py:588
+msgid "Red Servi"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:593 pretix_oppwa/paymentmethods.py:594
+msgid "Scotiabank"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:599 pretix_oppwa/paymentmethods.py:600
+msgid "Sencillito"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:605 pretix_oppwa/paymentmethods.py:606
+msgid "Shetab"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:611 pretix_oppwa/paymentmethods.py:612
+msgid "SIBS Multibanco"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:617
+msgid "Sofinco"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:618
+msgid "Sofinco (No Fees)"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:623 pretix_oppwa/paymentmethods.py:624
+msgid "STC Pay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:629 pretix_oppwa/paymentmethods.py:630
+msgid "SU Red"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:635 pretix_oppwa/paymentmethods.py:636
+msgid "SU Suerte"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:641 pretix_oppwa/paymentmethods.py:642
+msgid "Tenpay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:647 pretix_oppwa/paymentmethods.py:648
+msgid "Trustly"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:653 pretix_oppwa/paymentmethods.py:654
+msgid "Wechat Pay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:659 pretix_oppwa/paymentmethods.py:660
+msgid "Western Union"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:665 pretix_oppwa/paymentmethods.py:666
+msgid "Yandex"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:671 pretix_oppwa/paymentmethods.py:672
+msgid "Bitcoin"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:677 pretix_oppwa/paymentmethods.py:678
+msgid "Boleto"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:683 pretix_oppwa/paymentmethods.py:684
+msgid "SEPA Direct Debit"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:689 pretix_oppwa/paymentmethods.py:690
+msgid "Entercash"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:695 pretix_oppwa/paymentmethods.py:696
+msgid "eps"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:701 pretix_oppwa/paymentmethods.py:702
+msgid "giropay"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:707 pretix_oppwa/paymentmethods.py:708
+msgid "iDEAL"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:713 pretix_oppwa/paymentmethods.py:714
+msgid "Interac Online"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:719 pretix_oppwa/paymentmethods.py:720
+msgid "OXXO"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:725 pretix_oppwa/paymentmethods.py:726
+msgid "Poli"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:731 pretix_oppwa/paymentmethods.py:732
+msgid "Prepayment"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:737 pretix_oppwa/paymentmethods.py:738
+msgid "Sadad"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:743 pretix_oppwa/paymentmethods.py:744
+msgid "SEPA"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:749 pretix_oppwa/paymentmethods.py:750
+msgid "Sofortüberweisung"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:755 pretix_oppwa/paymentmethods.py:756
+msgid "Trustpay VA"
+msgstr ""
+
+#: pretix_oppwa/paymentmethods.py:805
+#, python-brace-format
+msgid "{payment_method} via {payment_provider}"
+msgstr "{payment_method} via {payment_provider}"
+
+#: pretix_oppwa/templates/pretix_oppwa/checkout_payment_confirm.html:3
+#: pretix_oppwa/templates/pretix_oppwa/checkout_payment_form.html:3
+msgid ""
+"After you submitted your order, we will redirect you to our payment provider "
+"to complete your payment. You will then be redirected back here to get your "
+"tickets."
+msgstr ""
+"Nach dem Klick auf „Fortfahren“ werden wir dich zum Zahlungsdienstleister "
+"weiterleiten, um deine Zahlungsdaten einzugeben. Danach wirst du wieder "
+"hierher zurückgeleitet, um deine Bestellung zu bestätigen."
+
+#: pretix_oppwa/templates/pretix_oppwa/checkout_payment_form.html:9
+msgid "You need to turn on JavaScript for this payment method to work."
+msgstr ""
+"Du musst JavaScript anschalten, damit diese Zahlungsmethode funktioniert."
+
+#: pretix_oppwa/templates/pretix_oppwa/control.html:6
+msgid "ID"
+msgstr ""
+
+#: pretix_oppwa/templates/pretix_oppwa/control.html:10
+msgid "Payment Brand"
+msgstr ""
+
+#: pretix_oppwa/templates/pretix_oppwa/control.html:14
+msgid "Result Code"
+msgstr ""
+
+#: pretix_oppwa/templates/pretix_oppwa/control.html:18
+msgid "Descriptor"
+msgstr ""
+
+#: pretix_oppwa/templates/pretix_oppwa/pay.html:5
+msgid "Pay order"
+msgstr "Bestellung bezahlen"
+
+#: pretix_oppwa/templates/pretix_oppwa/pay.html:14
+#, python-format
+msgid "Pay order: %(code)s"
+msgstr "Bestellung bezahlen: %(code)s"
+
+#: pretix_oppwa/templates/pretix_oppwa/pay.html:22
+msgid "Please turn on JavaScript."
+msgstr "Bitte aktiviere JavaScript."
+
+#: pretix_oppwa/templates/pretix_oppwa/pay.html:25
+msgid "Please use the button/form below to complete your payment."
+msgstr "Bitte nutze den Knopf/das Formular um die Zahlung durchzuführen."
+
+#: pretix_oppwa/templates/pretix_oppwa/pay.html:33
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: pretix_oppwa/templates/pretix_oppwa/pending.html:5
+msgid ""
+"We're waiting for an answer from the payment provider regarding your "
+"payment. Please contact us if this takes more than a few days."
+msgstr ""
+"Wir warten auf eine Antwort des Zahlungsdienstleisters bezüglich deiner "
+"Zahlung. Bitte kontaktiere uns, falls dies mehr als ein paar Tage dauert."
+
+#: pretix_oppwa/templates/pretix_oppwa/pending.html:10
+msgid ""
+"The payment transaction could not be completed for the following reason:"
+msgstr "Die Zahlung konnte aus folgendem Grund nicht abgeschlossen werden:"
+
+#: pretix_oppwa/templates/pretix_oppwa/pending.html:17
+msgid "Unknown reason"
+msgstr "Unbekannter Grund"
+
+#: pretix_oppwa/views.py:78 pretix_oppwa/views.py:93
+msgid ""
+"Sorry, we could not validate the payment result. Please try again or contact "
+"the event organizer to check if your payment was successful."
+msgstr ""
+"Wir konnten die Zahlung leider nicht validieren. Bitte versuche es erneut "
+"oder kontaktiere den Veranstalter, um herauszufinden ob die Zahlung "
+"erfolgreich war."

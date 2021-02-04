@@ -1,60 +1,64 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-04 13:29+0100\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Martin Gross\n"
-"Language-Team: \n"
-"Language: de\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: pretix_oppwa/__init__.py:16
 msgid "OPPWA payments for pretix"
-msgstr "OPPWA Zahlungen für pretix"
+msgstr ""
 
 #: pretix_oppwa/__init__.py:18
 msgid "This plugin allows you to use OPPWA based payment providers"
-msgstr "Dieses Plugin erlaubt Ihnen OPPWA-basierende Zahlungsdienstleister zu verwenden"
+msgstr ""
 
 #: pretix_oppwa/payment.py:26
 msgid "OPPWA"
-msgstr "OPPWA"
+msgstr ""
 
 #: pretix_oppwa/payment.py:42
 msgid "Access Token"
-msgstr "Access Token"
+msgstr ""
 
 #: pretix_oppwa/payment.py:47
 msgid "Endpoint"
-msgstr "Endpunkt"
+msgstr ""
 
 #: pretix_oppwa/payment.py:57 pretix_oppwa/paymentmethods.py:784
 msgid "Entity ID"
-msgstr "Entity ID"
+msgstr ""
 
 #: pretix_oppwa/payment.py:58 pretix_oppwa/paymentmethods.py:11
 #: pretix_oppwa/paymentmethods.py:12
 msgid "Credit card"
-msgstr "Kreditkarte"
+msgstr ""
 
 #: pretix_oppwa/payment.py:58
 msgid "All Payment Methods"
-msgstr "Alle Zahlungsmethoden"
+msgstr ""
 
 #: pretix_oppwa/payment.py:192
 msgid "No payment information found."
-msgstr "Keine Zahlungsinformationen gefunden."
+msgstr ""
 
 #: pretix_oppwa/payment.py:213 pretix_oppwa/payment.py:242
 msgid ""
 "We had trouble communicating with the payment service. Please try again and "
 "get in touch with us if this problem persists."
-msgstr "Es gab Probleme bei der Kommunikation mit den Zahlungsdienstleister. "
-"Bitte versuchen Sie es erneut. Wenn der Fehler weiterhin auftreten, wenden "
-"Sie sich bitte an den Support."
+msgstr ""
 
 #: pretix_oppwa/paymentmethods.py:17 pretix_oppwa/paymentmethods.py:18
 msgid "Affirm"
@@ -565,7 +569,7 @@ msgstr ""
 #: pretix_oppwa/paymentmethods.py:805
 #, python-brace-format
 msgid "{payment_method} via {payment_provider}"
-msgstr "{payment_method} via {payment_provider}"
+msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/checkout_payment_confirm.html:3
 #: pretix_oppwa/templates/pretix_oppwa/checkout_payment_form.html:3
@@ -574,14 +578,10 @@ msgid ""
 "to complete your payment. You will then be redirected back here to get your "
 "tickets."
 msgstr ""
-"Nach dem Klick auf „Fortfahren“ werden wir Sie zum Zahlungsdienstleister "
-"weiterleiten, um Ihre Zahlungsdaten einzugeben. Sie werden danach wieder "
-"hierher zurückgeleitet, um Ihre Bestellung zu bestätigen."
 
 #: pretix_oppwa/templates/pretix_oppwa/checkout_payment_form.html:9
 msgid "You need to turn on JavaScript for this payment method to work."
 msgstr ""
-"Sie müssen JavaScript anschalten, damit diese Zahlungsmethode funktioniert."
 
 #: pretix_oppwa/templates/pretix_oppwa/control.html:6
 msgid "ID"
@@ -601,48 +601,42 @@ msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/pay.html:5
 msgid "Pay order"
-msgstr "Bestellung bezahlen"
+msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/pay.html:14
 #, python-format
 msgid "Pay order: %(code)s"
-msgstr "Bestellung bezahlen: %(code)s"
+msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/pay.html:22
 msgid "Please turn on JavaScript."
-msgstr "Bitte aktivieren Sie JavaScript."
+msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/pay.html:25
 msgid "Please use the button/form below to complete your payment."
-msgstr "Bitte nutzen Sie den Knopf/das Formular um Ihre Zahlung durchzuführen."
+msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/pay.html:33
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/pending.html:5
 msgid ""
 "We're waiting for an answer from the payment provider regarding your "
 "payment. Please contact us if this takes more than a few days."
 msgstr ""
-"Wir warten auf eine Antwort des Zahlungsdienstleisters bezüglich Ihrer "
-"Zahlung. Bitte kontaktieren Sie uns, falls dies mehr als ein paar Tage "
-"dauert."
 
 #: pretix_oppwa/templates/pretix_oppwa/pending.html:10
 msgid ""
 "The payment transaction could not be completed for the following reason:"
-msgstr "Die Zahlung konnte aus folgendem Grund nicht abgeschlossen werden:"
+msgstr ""
 
 #: pretix_oppwa/templates/pretix_oppwa/pending.html:17
 msgid "Unknown reason"
-msgstr "Unbekannter Grund"
+msgstr ""
 
 #: pretix_oppwa/views.py:78 pretix_oppwa/views.py:93
 msgid ""
 "Sorry, we could not validate the payment result. Please try again or contact "
 "the event organizer to check if your payment was successful."
 msgstr ""
-"Wir konnten die Zahlung leider nicht validieren. Bitte versuchen Sie es "
-"erneut oder kontaktieren Sie den Veranstalter, um herauszufinden ob die "
-"Zahlung erfolgreich war."
