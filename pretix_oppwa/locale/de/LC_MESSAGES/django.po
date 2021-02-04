@@ -512,7 +512,7 @@ msgstr ""
 
 #: pretix_oppwa/paymentmethods.py:683 pretix_oppwa/paymentmethods.py:684
 msgid "SEPA Direct Debit"
-msgstr ""
+msgstr "SEPA Lastschrift"
 
 #: pretix_oppwa/paymentmethods.py:689 pretix_oppwa/paymentmethods.py:690
 msgid "Entercash"
