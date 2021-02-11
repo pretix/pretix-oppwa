@@ -11,8 +11,9 @@ from django.views import View
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
-from pretix.base.models import Order, OrderPayment, Quota
+from pretix.base.models import Order, OrderPayment
 from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
+
 
 class OPPWAOrderView:
     def dispatch(self, request, *args, **kwargs):
@@ -39,6 +40,12 @@ class OPPWAOrderView:
             pk=self.kwargs['payment'],
             provider__istartswith=self.kwargs['payment_provider'],
         )
+
+    def _redirect_to_order(self):
+        return redirect(eventreverse(self.request.event, 'presale:event.order', kwargs={
+            'order': self.order.code,
+            'secret': self.order.secret
+        }) + ('?paid=yes' if self.order.status == Order.STATUS_PAID else ''))
 
 
 @method_decorator(xframe_options_exempt, 'dispatch')
@@ -89,7 +96,7 @@ class ReturnView(OPPWAOrderView, View):
                     self.pprov.get_entity_id(self.payment.order.testmode),
                 )
             )
-        except requests.exceptions.RequestException as e:
+        except requests.exceptions.RequestException:
             messages.error(self.request, _('Sorry, we could not validate the payment result. Please try again or '
                                            'contact the event organizer to check if your payment was successful.'))
             return self._redirect_to_order()
@@ -97,12 +104,6 @@ class ReturnView(OPPWAOrderView, View):
             self.pprov.process_result(self.payment, r.json())
 
         return self._redirect_to_order()
-
-    def _redirect_to_order(self):
-        return redirect(eventreverse(self.request.event, 'presale:event.order', kwargs={
-            'order': self.order.code,
-            'secret': self.order.secret
-        }) + ('?paid=yes' if self.order.status == Order.STATUS_PAID else ''))
 
 # @method_decorator(csrf_exempt, name='dispatch')
 # @method_decorator(xframe_options_exempt, 'dispatch')
