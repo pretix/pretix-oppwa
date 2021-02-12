@@ -15,7 +15,7 @@ class VRPaySettingsHolder(OPPWASettingsHolder):
     is_enabled = False
     is_meta = True
     unique_entity_id = False
-    baseURLs = ['https://test.vr-pay-ecommerce.de', 'https://www.vr-pay-ecommerce.de']
+    baseURLs = ['https://test.vr-pay-ecommerce.de', 'https://vr-pay-ecommerce.de']
 
 
 class OPPWAMethod(SuperOPPWAMethod):
