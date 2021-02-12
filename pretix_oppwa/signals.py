@@ -35,7 +35,7 @@ def wrapped_signal_process_response(settingsholder, sender, request: HttpRequest
             'script-src': provider.baseURLs + ['https://oppwa.com/', 'https://pay.google.com/', "'unsafe-eval'"],
             'style-src': provider.baseURLs + ['https://oppwa.com/', "'unsafe-inline'"],
             'connect-src': provider.baseURLs + ['https://oppwa.com/'],
-            'img-src': provider.baseURLs + ['https://www.gstatic.com/'],
+            'img-src': provider.baseURLs + ['https://oppwa.com/', 'https://www.gstatic.com/'],
             'frame-src': provider.baseURLs + ['https://oppwa.com/', 'https://pay.google.com/']
         }
 
