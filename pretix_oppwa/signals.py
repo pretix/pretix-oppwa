@@ -33,10 +33,10 @@ def wrapped_signal_process_response(settingsholder, sender, request: HttpRequest
 
         csps = {
             'script-src': provider.baseURLs + ['https://oppwa.com/', 'https://pay.google.com/', "'unsafe-eval'"],
-            'style-src': provider.baseURLs + ["'unsafe-inline'"],
-            'connect-src': provider.baseURLs,
+            'style-src': provider.baseURLs + ['https://oppwa.com/', "'unsafe-inline'"],
+            'connect-src': provider.baseURLs + ['https://oppwa.com/'],
             'img-src': provider.baseURLs + ['https://www.gstatic.com/'],
-            'frame-src': provider.baseURLs + ['https://pay.google.com/']
+            'frame-src': provider.baseURLs + ['https://oppwa.com/', 'https://pay.google.com/']
         }
 
         _merge_csp(h, csps)
