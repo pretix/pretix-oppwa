@@ -11,6 +11,7 @@ import requests
 from django import forms
 from django.http import HttpRequest
 from django.template.loader import get_template
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _  # NoQA
 
 from pretix.base.models import Event, Order, OrderPayment, OrderRefund
@@ -259,10 +260,11 @@ class OPPWAMethod(BasePaymentProvider):
         else:
             return self.method
 
-    def process_result(self, payment, data):
-        if payment.state in (
+    def process_result(self, payment_or_refund, data):
+        if isinstance(payment_or_refund, OrderPayment) and payment_or_refund.state in (
                 OrderPayment.PAYMENT_STATE_PENDING, OrderPayment.PAYMENT_STATE_CREATED
         ):
+            payment = payment_or_refund
             if 'id' not in data or 'id' not in payment.info_data or payment.info_data['id'] != data['id']:
                 payment.fail()
 
@@ -273,16 +275,51 @@ class OPPWAMethod(BasePaymentProvider):
             if re.compile(r'^(000\.000\.|000\.100\.1|000\.[36])').match(data['result']['code']):
                 payment.confirm()
             # Successfully processed transactions that should be manually reviewed
-            if re.compile(r'^(000\.400\.0[^3]|000\.400\.100)').match(data['result']['code']):
+            elif re.compile(r'^(000\.400\.0[^3]|000\.400\.100)').match(data['result']['code']):
                 payment.state = OrderPayment.PAYMENT_STATE_PENDING
                 payment.save()
             # Pending transaction in background, might change in 30 minutes or time out
-            if re.compile(r'^(000\.200)').match(data['result']['code']):
+            elif re.compile(r'^(000\.200)').match(data['result']['code']):
                 payment.state = OrderPayment.PAYMENT_STATE_PENDING
                 payment.save()
             # Pending transaction in background, might change in some days or time out
-            if re.compile(r'^(800\.400\.5|100\.400\.500)').match(data['result']['code']):
+            elif re.compile(r'^(800\.400\.5|100\.400\.500)').match(data['result']['code']):
                 payment.state = OrderPayment.PAYMENT_STATE_PENDING
                 payment.save()
             else:
                 payment.fail()
+
+        elif isinstance(payment_or_refund, OrderRefund) and payment_or_refund.state in (
+                OrderRefund.REFUND_STATE_CREATED, OrderRefund.REFUND_STATE_TRANSIT
+        ):
+            refund = payment_or_refund
+            # We should really check here if there is a referenced id - but unfortuantely it is not always present...
+            # if 'referencedId' not in data or refund.payment.info_data['id'] != data['referencedId']:
+            if 'id' not in data:
+                refund.state = OrderRefund.REFUND_STATE_FAILED
+                refund.execution_date = now()
+
+            refund.info_data = data
+            refund.save()
+
+            # Successfully processed transactions
+            if re.compile(r'^(000\.000\.|000\.100\.1|000\.[36])').match(data['result']['code']):
+                refund.done()
+            # Successfully processed transactions that should be manually reviewed
+            elif re.compile(r'^(000\.400\.0[^3]|000\.400\.100)').match(data['result']['code']):
+                refund.state = OrderRefund.REFUND_STATE_TRANSIT
+                refund.save()
+            # Pending transaction in background, might change in 30 minutes or time out
+            elif re.compile(r'^(000\.200)').match(data['result']['code']):
+                refund.state = OrderRefund.REFUND_STATE_TRANSIT
+                refund.save()
+            # Pending transaction in background, might change in some days or time out
+            elif re.compile(r'^(800\.400\.5|100\.400\.500)').match(data['result']['code']):
+                refund.state = OrderRefund.REFUND_STATE_TRANSIT
+                refund.save()
+            else:
+                refund.state = OrderRefund.REFUND_STATE_FAILED
+                refund.execution_date = now()
+                refund.save()
+        else:
+            raise PaymentException(_('We had trouble processing your transaction.'))
