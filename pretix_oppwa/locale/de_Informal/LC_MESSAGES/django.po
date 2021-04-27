@@ -574,9 +574,9 @@ msgid ""
 "to complete your payment. You will then be redirected back here to get your "
 "tickets."
 msgstr ""
-"Nach dem Klick auf „Fortfahren“ werden wir dich zum Zahlungsdienstleister "
-"weiterleiten, um deine Zahlungsdaten einzugeben. Danach wirst du wieder "
-"hierher zurückgeleitet, um deine Bestellung zu bestätigen."
+"Nach Abschluss Ihrer Bestellung werden wir Sie zu unserem "
+"Zahlungsdienstleister weiterleiten um Ihre Zahlung abzuschließen. "
+"Anschließend werden Sie zurückgeleitet um hier Ihre Tickets herunterzuladen."
 
 #: pretix_oppwa/templates/pretix_oppwa/checkout_payment_form.html:9
 msgid "You need to turn on JavaScript for this payment method to work."
