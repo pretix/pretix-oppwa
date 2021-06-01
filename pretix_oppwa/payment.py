@@ -41,7 +41,6 @@ class OPPWASettingsHolder(BasePaymentProvider):
             ('access_token',
              forms.CharField(
                  label=_('Access Token'),
-                 required=False,
              )),
             ('endpoint',
              forms.ChoiceField(
