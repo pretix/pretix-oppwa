@@ -12,6 +12,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from pretix.base.models import Order, OrderPayment
+from pretix.base.payment import PaymentException
 from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
 
 
@@ -101,7 +102,10 @@ class ReturnView(OPPWAOrderView, View):
                                            'contact the event organizer to check if your payment was successful.'))
             return self._redirect_to_order()
         else:
-            self.pprov.process_result(self.payment, r.json())
+            try:
+                self.pprov.process_result(self.payment, r.json())
+            except PaymentException as e:
+                messages.error(self.request, str(e))
 
         return self._redirect_to_order()
 
