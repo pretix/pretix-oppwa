@@ -1,4 +1,6 @@
-from pretix_oppwa.paymentmethods import get_payment_method_classes, payment_methods as payment_methods_repo
+from pretix_oppwa.paymentmethods import (
+    get_payment_method_classes, payment_methods as payment_methods_repo,
+)
 
 from .payment import OPPWAMethod, VRPaySettingsHolder
 

@@ -1,23 +1,20 @@
-import importlib
-import re
-
 import hashlib
+import importlib
 import json
 import logging
+import re
+import requests
 from collections import OrderedDict
 from decimal import Decimal
-
-import requests
 from django import forms
 from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _  # NoQA
-
-from pretix.base.models import Event, Order, OrderPayment, OrderRefund
+from pretix.base.models import Event, OrderPayment, OrderRefund
 from pretix.base.payment import BasePaymentProvider, PaymentException
 from pretix.base.settings import SettingsSandbox
-from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
+from pretix.multidomain.urlreverse import eventreverse
 
 logger = logging.getLogger('pretix_oppwa')
 
@@ -94,7 +91,7 @@ class OPPWAMethod(BasePaymentProvider):
             return False
         else:
             return self.settings.get('_enabled', as_type=bool) and self.settings.get('method_{}'.format(self.method),
-                                                                                 as_type=bool)
+                                                                                     as_type=bool)
 
     def payment_refund_supported(self, payment: OrderPayment) -> bool:
         return True
@@ -218,9 +215,8 @@ class OPPWAMethod(BasePaymentProvider):
 
         self.process_result(refund, payment_info)
 
-    def create_checkout(self, payment: OrderPayment):
-        s = self._init_api(payment.order.testmode)
-        data = {
+    def get_checkout_payload(self, payment: OrderPayment):
+        return {
             'entityId': self.get_entity_id(payment.order.testmode),
             'amount': str(payment.amount),
             'currency': self.event.currency,
@@ -228,8 +224,12 @@ class OPPWAMethod(BasePaymentProvider):
             'merchantTransactionId': '{event}-{code}-P-{payment}'.format(event=self.event.slug.upper(), code=payment.order.code, payment=payment.local_id),
             # Ordinarily we would pass the type of payment method - or in the case of schemes all the allowed ones -
             # but somehow OPPWA only allows us to pass a single payment method. So we will not set it for credit cards.
-            #'paymentBrand': None if self.type == 'meta' else self.method
+            # 'paymentBrand': None if self.type == 'meta' else self.method
         }
+
+    def create_checkout(self, payment: OrderPayment):
+        s = self._init_api(payment.order.testmode)
+        data = self.get_checkout_payload(payment)
 
         try:
             r = s.post(

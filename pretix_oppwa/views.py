@@ -1,5 +1,4 @@
 import hashlib
-
 import requests
 from django.contrib import messages
 from django.http import Http404
