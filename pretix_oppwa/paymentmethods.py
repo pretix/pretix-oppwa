@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .payment import OPPWAMethod, OPPWASettingsHolder
+from .payment import OPPWAMethod, OPPWASettingsHolder, OPPWApaydirekt
 
 payment_methods = [
     {
@@ -501,7 +501,12 @@ payment_methods = [
         'type': 'other',
         'method': 'PAYDIREKT',
         'public_name': _('paydirekt'),
-        'verbose_name': _('paydirekt')
+        'verbose_name': _('paydirekt'),
+        'baseclass': OPPWApaydirekt,
+        'help_text': '<div class="alert alert-danger">{}</div>'.format(
+            _('{payment_method} payments only work if the customer fills in a full invoice address, so we recommend '
+              'requiring an address in your invoicing settings.'.format(payment_method='paydirekt'))
+            )
     }, {
         'identifier': 'paynet',
         'type': 'other',
@@ -771,6 +776,7 @@ def get_payment_method_classes(brand, payment_methods, baseclass, settingsholder
                         '<span class="fa fa-credit-card"></span>' if m['type'] == 'scheme' else '',
                         m['verbose_name']
                     ),
+                    help_text=m['help_text'] if 'help_text' in m else '',
                     required=False,
             ))
         )
@@ -797,7 +803,7 @@ def get_payment_method_classes(brand, payment_methods, baseclass, settingsholder
     # We do not want the "scheme"-methods listed as a payment-method, since they are covered by the meta methods
     return [settingsholder] + [
         type(
-            f'OPPWA{"".join(m["public_name"].split())}', (baseclass,), {
+            f'OPPWA{"".join(m["public_name"].split())}', (m['baseclass'] if 'baseclass' in m else baseclass,), {
                 'identifier': '{payment_provider}_{payment_method}'.format(
                     payment_method=m['identifier'],
                     payment_provider=brand.lower()

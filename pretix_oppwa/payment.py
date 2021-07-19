@@ -322,3 +322,20 @@ class OPPWAMethod(BasePaymentProvider):
                 refund.save()
         else:
             raise PaymentException(_('We had trouble processing your transaction.'))
+
+
+class OPPWApaydirekt(OPPWAMethod):
+    def get_checkout_payload(self, payment: OrderPayment):
+        payload = super().get_checkout_payload(payment)
+        payload['shipping.street1'] = payment.order.invoice_address.street
+        payload['shipping.city'] = payment.order.invoice_address.city
+        payload['shipping.postcode'] = payment.order.invoice_address.zipcode
+        payload['shipping.country'] = str(payment.order.invoice_address.country)
+        payload['customer.givenName'] = payment.order.invoice_address.name_parts.get('given_name', payment.order.invoice_address.name)
+        payload['customer.surname'] = payment.order.invoice_address.name_parts.get('family_name', payment.order.invoice_address.name)
+
+        # We might also need to set the paymentBrand and shopperResultUrl - but when using testMode EXTERNAL, it also worked without.
+        return payload
+
+    def is_allowed(self, request: HttpRequest, total: Decimal = None) -> bool:
+        return super().is_allowed(request, total) and request.event.settings.invoice_address_required

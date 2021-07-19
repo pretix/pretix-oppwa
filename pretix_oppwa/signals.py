@@ -32,7 +32,7 @@ def wrapped_signal_process_response(settingsholder, sender, request: HttpRequest
             h = {}
 
         csps = {
-            'script-src': provider.baseURLs + ['https://oppwa.com/', 'https://pay.google.com/', "'unsafe-eval'"],
+            'script-src': provider.baseURLs + ['https://oppwa.com/', 'https://test.oppwa.com/', 'https://pay.google.com/', "'unsafe-eval'"],
             'style-src': provider.baseURLs + ['https://oppwa.com/', "'unsafe-inline'"],
             'connect-src': provider.baseURLs + ['https://oppwa.com/'],
             'img-src': provider.baseURLs + ['https://oppwa.com/', 'https://www.gstatic.com/'],
