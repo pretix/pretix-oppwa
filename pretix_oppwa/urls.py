@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 
-from .views import PayView, ReturnView
+from .views import PayView, ReturnView, NotifyView
 
 
 def get_event_patterns(brand):
@@ -8,6 +8,7 @@ def get_event_patterns(brand):
         url(r'^(?P<payment_provider>{})/'.format(brand), include([
             url(r'^pay/(?P<order>[^/]+)/(?P<hash>[^/]+)/(?P<payment>[^/]+)/$', PayView.as_view(), name='pay'),
             url(r'^return/(?P<order>[^/]+)/(?P<hash>[^/]+)/(?P<payment>[^/]+)/$', ReturnView.as_view(), name='return'),
+            url(r'^return/(?P<order>[^/]+)/(?P<hash>[^/]+)/(?P<payment>[^/]+)/$', NotifyView.as_view(), name='notify'),
         ])),
     ]
 

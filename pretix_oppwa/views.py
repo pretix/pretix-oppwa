@@ -108,26 +108,8 @@ class ReturnView(OPPWAOrderView, View):
 
         return self._redirect_to_order()
 
-# @method_decorator(csrf_exempt, name='dispatch')
-# @method_decorator(xframe_options_exempt, 'dispatch')
-# class NotifyView(ReturnView):
-#     def validate_digest(self, request, prov):
-#         if 'response_hash' in request.POST:
-#             postdigest = request.POST.get('response_hash')
-#
-#             digest = ''.join([
-#                 request.POST.get('chargetotal', ''),
-#                 self.pprov.settings.get(
-#                     'test_shared_connect_secret') if self.order.testmode else self.papprovyment.settings.get(
-#                     'prod_shared_connect_secret'),
-#                 request.POST.get('currency', ''),
-#                 self.payment.created.astimezone(self.order.event.timezone).strftime('%Y:%m:%d-%H:%M:%S'),
-#                 self.pprov.settings.get(
-#                     'test_store_id') if self.order.testmode else self.pprov.settings.get('prod_store_id'),
-#                 request.POST.get('approval_code', ''),
-#             ])
-#             digest = hashlib.sha512(hexlify(digest.encode())).hexdigest()
-#
-#             return digest == postdigest
-#
-#         return False
+
+@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(xframe_options_exempt, 'dispatch')
+class NotifyView(ReturnView, OPPWAOrderView, View):
+    pass
