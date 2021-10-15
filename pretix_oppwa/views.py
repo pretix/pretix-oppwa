@@ -80,6 +80,8 @@ class PayView(OPPWAOrderView, TemplateView):
 @method_decorator(csrf_exempt, name='dispatch')
 @method_decorator(xframe_options_exempt, 'dispatch')
 class ReturnView(OPPWAOrderView, View):
+    viewsource = 'return_view'
+
     def get(self, request, *args, **kwargs):
         if 'resourcePath' not in request.GET:
             messages.error(self.request, _('Sorry, we could not validate the payment result. Please try again or '
@@ -102,7 +104,7 @@ class ReturnView(OPPWAOrderView, View):
             return self._redirect_to_order()
         else:
             try:
-                self.pprov.process_result(self.payment, r.json())
+                self.pprov.process_result(self.payment, r.json(), self.viewsource)
             except PaymentException as e:
                 messages.error(self.request, str(e))
 
@@ -112,4 +114,5 @@ class ReturnView(OPPWAOrderView, View):
 @method_decorator(csrf_exempt, name='dispatch')
 @method_decorator(xframe_options_exempt, 'dispatch')
 class NotifyView(ReturnView, OPPWAOrderView, View):
-    pass
+    viewsource = 'notify_view'
+

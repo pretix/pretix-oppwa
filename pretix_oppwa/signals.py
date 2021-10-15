@@ -3,7 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import resolve
 from django.utils.translation import gettext_lazy as _  # NoQA
 from pretix.base.middleware import _merge_csp, _parse_csp, _render_csp
-from pretix.base.signals import register_payment_providers
+from pretix.base.signals import register_payment_providers, logentry_display
 from pretix.presale.signals import process_response
 
 from pretix_oppwa.payment import OPPWASettingsHolder
@@ -44,3 +44,11 @@ def wrapped_signal_process_response(settingsholder, sender, request: HttpRequest
         if h:
             response['Content-Security-Policy'] = _render_csp(h)
     return response
+
+
+@receiver(signal=logentry_display, dispatch_uid="payment_oppwa_logentry_display")
+def logentry_display(sender, logentry, **kwargs):
+    if logentry.action_type != 'pretix_oppwa.oppwa.event':
+        return
+
+    return _('OPPWA reported an event')

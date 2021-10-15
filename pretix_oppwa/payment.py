@@ -7,6 +7,7 @@ import requests
 from collections import OrderedDict
 from decimal import Decimal
 from django import forms
+from django.db import transaction
 from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.timezone import now
@@ -213,7 +214,7 @@ class OPPWAMethod(BasePaymentProvider):
             refund.info = json.dumps(r.json())
             refund.save()
 
-        self.process_result(refund, payment_info)
+        self.process_result(refund, payment_info, 'execute_refund')
 
     def get_checkout_payload(self, payment: OrderPayment):
         ident = self.identifier.split('_')[0]
@@ -267,34 +268,43 @@ class OPPWAMethod(BasePaymentProvider):
         else:
             return self.method
 
-    def process_result(self, payment_or_refund, data):
-        if isinstance(payment_or_refund, OrderPayment) and payment_or_refund.state in (
-                OrderPayment.PAYMENT_STATE_PENDING, OrderPayment.PAYMENT_STATE_CREATED
-        ):
+    @transaction.atomic
+    def process_result(self, payment_or_refund, data, datasource):
+        if isinstance(payment_or_refund, OrderPayment):
             payment = payment_or_refund
             if 'id' not in data or 'id' not in payment.info_data or payment.info_data['id'] != data['id']:
-                payment.fail()
+                payment.fail(info=data)
+
+            payment.order.log_action('pretix_oppwa.oppwa.event', data={
+                'source': datasource,
+                'data': data
+            })
 
             payment.info_data = data
             payment.save()
 
             # Successfully processed transactions
             if re.compile(r'^(000\.000\.|000\.100\.1|000\.[36])').match(data['result']['code']):
-                payment.confirm()
+                if payment.state not in (OrderPayment.PAYMENT_STATE_CONFIRMED, OrderPayment.PAYMENT_STATE_REFUNDED):
+                    payment.confirm()
             # Successfully processed transactions that should be manually reviewed
             elif re.compile(r'^(000\.400\.0[^3]|000\.400\.100)').match(data['result']['code']):
-                payment.state = OrderPayment.PAYMENT_STATE_PENDING
-                payment.save()
+                if payment.state == OrderPayment.PAYMENT_STATE_CREATED:
+                    payment.state = OrderPayment.PAYMENT_STATE_PENDING
+                    payment.save()
             # Pending transaction in background, might change in 30 minutes or time out
             elif re.compile(r'^(000\.200)').match(data['result']['code']):
-                payment.state = OrderPayment.PAYMENT_STATE_PENDING
-                payment.save()
+                if payment.state == OrderPayment.PAYMENT_STATE_CREATED:
+                    payment.state = OrderPayment.PAYMENT_STATE_PENDING
+                    payment.save()
             # Pending transaction in background, might change in some days or time out
             elif re.compile(r'^(800\.400\.5|100\.400\.500)').match(data['result']['code']):
-                payment.state = OrderPayment.PAYMENT_STATE_PENDING
-                payment.save()
+                if payment.state == OrderPayment.PAYMENT_STATE_CREATED:
+                    payment.state = OrderPayment.PAYMENT_STATE_PENDING
+                    payment.save()
             else:
-                payment.fail()
+                if payment.state not in (OrderPayment.PAYMENT_STATE_CONFIRMED, OrderPayment.PAYMENT_STATE_REFUNDED):
+                    payment.fail(info=data)
 
         elif isinstance(payment_or_refund, OrderRefund) and payment_or_refund.state in (
                 OrderRefund.REFUND_STATE_CREATED, OrderRefund.REFUND_STATE_TRANSIT
