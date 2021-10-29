@@ -272,13 +272,15 @@ class OPPWAMethod(BasePaymentProvider):
     def process_result(self, payment_or_refund, data, datasource):
         if isinstance(payment_or_refund, OrderPayment):
             payment = payment_or_refund
-            if 'id' not in data or 'id' not in payment.info_data or payment.info_data['id'] != data['id']:
-                payment.fail(info=data)
 
             payment.order.log_action('pretix_oppwa.oppwa.event', data={
                 'source': datasource,
                 'data': data
             })
+
+            if 'ndc' not in data or 'ndc' not in payment.info_data or payment.info_data['ndc'] != data['ndc']:
+                payment.fail(info=data)
+                return
 
             payment.info_data = data
             payment.save()
