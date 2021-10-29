@@ -278,10 +278,6 @@ class OPPWAMethod(BasePaymentProvider):
                 'data': data
             })
 
-            if 'ndc' not in data or 'ndc' not in payment.info_data or payment.info_data['ndc'] != data['ndc']:
-                payment.fail(info=data)
-                return
-
             payment.info_data = data
             payment.save()
 
