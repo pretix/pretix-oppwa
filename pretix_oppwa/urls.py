@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 
-from .views import PayView, ReturnView, NotifyView
+from .views import NotifyView, PayView, ReturnView
 
 
 def get_event_patterns(brand):
