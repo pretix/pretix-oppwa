@@ -10,12 +10,12 @@ __version__ = '1.0.0'
 
 class PluginApp(PluginConfig):
     name = 'pretix_oppwa'
-    verbose_name = 'OPPWA payments for pretix'
+    verbose_name = 'OPPWA payments'
 
     class PretixPluginMeta:
-        name = gettext_lazy('OPPWA payments for pretix')
+        name = gettext_lazy('OPPWA payments')
         author = 'Martin Gross'
-        description = gettext_lazy('This plugin allows you to use OPPWA based payment providers')
+        description = gettext_lazy('Easily connect to any payment provider using OPPWA-based technology.')
         visible = True
         version = __version__
         category = 'PAYMENT'

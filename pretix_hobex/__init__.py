@@ -10,12 +10,14 @@ __version__ = '1.0.0'
 
 class PluginApp(PluginConfig):
     name = 'pretix_hobex'
-    verbose_name = 'Hobex payments for pretix'
+    verbose_name = 'Hobex'
 
     class PretixPluginMeta:
-        name = gettext_lazy('Hobex payments for pretix')
+        name = gettext_lazy('Hobex')
         author = 'Martin Gross'
-        description = gettext_lazy('This plugin allows to use Hobex as a payment provider')
+        description = gettext_lazy('Accept payments through Hobex, a payment provider active in Austria, Germany, '
+                                'Italia, and more european coutnries.')
+        picture = "pretix_hobex/logo.png"
         visible = True
         version = __version__
         category = 'PAYMENT'

@@ -10,13 +10,15 @@ __version__ = '1.0.0'
 
 class PluginApp(PluginConfig):
     name = 'pretix_vrpay'
-    verbose_name = 'VR Payment payments for pretix'
+    verbose_name = 'VR Payment'
 
     class PretixPluginMeta:
-        name = gettext_lazy('VR Payment payments for pretix')
+        name = gettext_lazy('VR Payment')
         author = 'Martin Gross'
-        description = gettext_lazy('This plugin allows to use VR Payment as a payment provider')
+        description = gettext_lazy('Accept payments through VR Payment, the payment service provider of '
+                                   'Volksbanken Raiffeisenbanken.')
         visible = True
+        picture = "pretix_vrpay/logo.svg"
         version = __version__
         category = 'PAYMENT'
         compatibility = "pretix>=3.10.0.dev0"
