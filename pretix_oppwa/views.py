@@ -56,13 +56,25 @@ class PayView(OPPWAOrderView, TemplateView):
         if self.payment.state not in [OrderPayment.PAYMENT_STATE_CREATED, OrderPayment.PAYMENT_STATE_PENDING]:
             return self._redirect_to_order()
         else:
-            r = render(request, 'pretix_oppwa/pay.html', self.get_context_data())
-            return r
+            ctx = self.get_context_data()
+            if ctx['checkouturl'] != 'fail':
+                r = render(request, 'pretix_oppwa/pay.html', ctx)
+                return r
+            else:
+                return self._redirect_to_order()
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ident = self.pprov.identifier.split('_')[0]
-        ctx['checkouturl'] = self.pprov.create_checkout(self.payment)
+        try:
+            ctx['checkouturl'] = self.pprov.create_checkout(self.payment)
+        except PaymentException:
+            ctx['checkouturl'] = 'fail'
+            messages.error(
+                self.request,
+                _('We had trouble communicating with the payment service. Please try again and get in touch with us if '
+                  'this problem persists.')
+            )
         ctx['order'] = self.order
         ctx['payment'] = self.payment
         ctx['payment_hash'] = hashlib.sha1(self.payment.order.secret.lower().encode()).hexdigest()

@@ -245,15 +245,16 @@ class OPPWAMethod(BasePaymentProvider):
                 '{}/v1/checkouts'.format(self.get_endpoint_url(payment.order.testmode)),
                 data=data,
             )
+            r.raise_for_status()
         except requests.exceptions.RequestException as e:
             logger.exception('Error on creating payment: ' + str(e))
+            payment.info = json.dumps(r.json())
+            payment.save()
+
             raise PaymentException(
                 _('We had trouble communicating with the payment service. Please try again and get '
                   'in touch with us if this problem persists.'))
         else:
-            payment.info = json.dumps(r.json())
-            payment.save()
-
             return '{}/v1/paymentWidgets.js?checkoutId={}'.format(
                 self.get_endpoint_url(payment.order.testmode),
                 r.json()['id']
