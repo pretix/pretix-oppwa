@@ -95,10 +95,14 @@ class OPPWAMethod(BasePaymentProvider):
                                                                                      as_type=bool)
 
     def payment_refund_supported(self, payment: OrderPayment) -> bool:
-        return True
+        if 'id' in payment.info_data:
+            return True
+        return False
 
     def payment_partial_refund_supported(self, payment: OrderPayment) -> bool:
-        return True
+        if 'id' in payment.info_data:
+            return True
+        return False
 
     def get_endpoint_url(self, testmode):
         if testmode:
@@ -279,28 +283,30 @@ class OPPWAMethod(BasePaymentProvider):
                 'data': data
             })
 
-            payment.info_data = data
-            payment.save()
-
             # Successfully processed transactions
             if re.compile(r'^(000\.000\.|000\.100\.1|000\.[36])').match(data['result']['code']):
                 if payment.state not in (OrderPayment.PAYMENT_STATE_CONFIRMED, OrderPayment.PAYMENT_STATE_REFUNDED):
+                    payment.info_data = data
+                    payment.save(update_fields=['info'])
                     payment.confirm()
             # Successfully processed transactions that should be manually reviewed
             elif re.compile(r'^(000\.400\.0[^3]|000\.400\.100)').match(data['result']['code']):
                 if payment.state == OrderPayment.PAYMENT_STATE_CREATED:
                     payment.state = OrderPayment.PAYMENT_STATE_PENDING
-                    payment.save()
+                    payment.info_data = data
+                    payment.save(update_fields=['state', 'info'])
             # Pending transaction in background, might change in 30 minutes or time out
             elif re.compile(r'^(000\.200)').match(data['result']['code']):
                 if payment.state == OrderPayment.PAYMENT_STATE_CREATED:
                     payment.state = OrderPayment.PAYMENT_STATE_PENDING
-                    payment.save()
+                    payment.info_data = data
+                    payment.save(update_fields=['state', 'info'])
             # Pending transaction in background, might change in some days or time out
             elif re.compile(r'^(800\.400\.5|100\.400\.500)').match(data['result']['code']):
                 if payment.state == OrderPayment.PAYMENT_STATE_CREATED:
                     payment.state = OrderPayment.PAYMENT_STATE_PENDING
-                    payment.save()
+                    payment.info_data = data
+                    payment.save(update_fields=['state', 'info'])
             else:
                 if payment.state not in (OrderPayment.PAYMENT_STATE_CONFIRMED, OrderPayment.PAYMENT_STATE_REFUNDED):
                     payment.fail(info=data)
@@ -315,28 +321,31 @@ class OPPWAMethod(BasePaymentProvider):
                 refund.state = OrderRefund.REFUND_STATE_FAILED
                 refund.execution_date = now()
 
-            refund.info_data = data
-            refund.save()
-
             # Successfully processed transactions
             if re.compile(r'^(000\.000\.|000\.100\.1|000\.[36])').match(data['result']['code']):
+                refund.info_data = data
+                refund.save(update_fields=['info'])
                 refund.done()
             # Successfully processed transactions that should be manually reviewed
             elif re.compile(r'^(000\.400\.0[^3]|000\.400\.100)').match(data['result']['code']):
                 refund.state = OrderRefund.REFUND_STATE_TRANSIT
-                refund.save()
+                refund.info_data = data
+                refund.save(update_fields=['state', 'info'])
             # Pending transaction in background, might change in 30 minutes or time out
             elif re.compile(r'^(000\.200)').match(data['result']['code']):
                 refund.state = OrderRefund.REFUND_STATE_TRANSIT
-                refund.save()
+                refund.info_data = data
+                refund.save(update_fields=['state', 'info'])
             # Pending transaction in background, might change in some days or time out
             elif re.compile(r'^(800\.400\.5|100\.400\.500)').match(data['result']['code']):
                 refund.state = OrderRefund.REFUND_STATE_TRANSIT
-                refund.save()
+                refund.info_data = data
+                refund.save(update_fields=['state', 'info'])
             else:
                 refund.state = OrderRefund.REFUND_STATE_FAILED
                 refund.execution_date = now()
-                refund.save()
+                refund.info_data = data
+                refund.save(update_fields=['state', 'execution_date', 'info'])
         else:
             raise PaymentException(_('We had trouble processing your transaction.'))
 
