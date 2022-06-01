@@ -803,7 +803,14 @@ def get_payment_method_classes(brand, payment_methods, baseclass, settingsholder
     # We do not want the "scheme"-methods listed as a payment-method, since they are covered by the meta methods
     return [settingsholder] + [
         type(
-            f'OPPWA{"".join(m["public_name"].split())}', (m['baseclass'] if 'baseclass' in m else baseclass,), {
+            f'OPPWA{"".join(m["public_name"].split())}', (
+                # Custom baseclasses should always inherit from the brand-specific baseclass
+                type(
+                    f'OPPWA{"".join(m["public_name"].split())}',
+                    (m["baseclass"], baseclass),
+                    {}
+                ) if 'baseclass' in m else baseclass,
+            ), {
                 'identifier': '{payment_provider}_{payment_method}'.format(
                     payment_method=m['identifier'],
                     payment_provider=brand.lower()
