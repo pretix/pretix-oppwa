@@ -250,11 +250,16 @@ class OPPWAMethod(BasePaymentProvider):
                 data=data,
             )
             r.raise_for_status()
-        except requests.exceptions.RequestException as e:
+        except requests.exceptions.HTTPError as e:
             logger.exception('Error on creating payment: ' + str(e))
             payment.info = json.dumps(r.json())
             payment.save()
 
+            raise PaymentException(
+                _('We had trouble communicating with the payment service. Please try again and get '
+                  'in touch with us if this problem persists.'))
+        except requests.exceptions.RequestException as e:
+            logger.exception('Error on creating payment: ' + str(e))
             raise PaymentException(
                 _('We had trouble communicating with the payment service. Please try again and get '
                   'in touch with us if this problem persists.'))
