@@ -500,13 +500,13 @@ payment_methods = [
         'identifier': 'paydirekt',
         'type': 'other',
         'method': 'PAYDIREKT',
-        'public_name': _('paydirekt'),
-        'verbose_name': _('paydirekt'),
+        'public_name': _('giropay'),
+        'verbose_name': _('giropay (formerly paydirekt)'),
         'baseclass': OPPWApaydirekt,
         'help_text': '<div class="alert alert-danger">{}</div>'.format(
             _('{payment_method} payments only work if the customer fills in a full invoice address, so we recommend '
-              'requiring an address in your invoicing settings.'.format(payment_method='paydirekt'))
-            )
+              'requiring an address in your invoicing settings.'.format(payment_method='giropay'))
+        )
     }, {
         'identifier': 'paynet',
         'type': 'other',
@@ -704,7 +704,15 @@ payment_methods = [
         'type': 'other',
         'method': 'GIROPAY',
         'public_name': _('giropay'),
-        'verbose_name': _('giropay')
+        'verbose_name': _('giropay'),
+        'help_text': '<div class="alert alert-danger">{}</div>'.format(
+            _('giropay has been acquired by paydirekt. During the course of the acquisition, the phasing out of the '
+              'existing giropay-system has been announced. Since December 2022, some payment providers started using '
+              'the paydirekt system exclusively, but rebranded it from paydirekt to "the new giropay". Please contact '
+              'your payment provider to learn more about this change and if you need to update your acceptance '
+              'contract and/or integration. You might also want to consider disabling this payment method and enabling '
+              '"giropay (formerly paydirekt)" instead.')
+        )
     }, {
         'identifier': 'ideal',
         'type': 'other',
@@ -772,12 +780,12 @@ def get_payment_method_classes(brand, payment_methods, baseclass, settingsholder
         settingsholder.payment_methods_settingsholder.append(
             ('method_{}'.format(m['method']),
              forms.BooleanField(
-                    label='{} {}'.format(
-                        '<span class="fa fa-credit-card"></span>' if m['type'] == 'scheme' else '',
-                        m['verbose_name']
-                    ),
-                    help_text=m['help_text'] if 'help_text' in m else '',
-                    required=False,
+                label='{} {}'.format(
+                    '<span class="fa fa-credit-card"></span>' if m['type'] == 'scheme' else '',
+                    m['verbose_name']
+                ),
+                help_text=m['help_text'] if 'help_text' in m else '',
+                required=False,
             ))
         )
 
