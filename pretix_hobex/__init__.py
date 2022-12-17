@@ -1,1 +1,1 @@
-__version__ = '1.0.0'
+from pretix_oppwa import __version__
