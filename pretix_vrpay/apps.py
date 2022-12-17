@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy
-from pretix_oopwa import __version__
+from pretix_oppwa import __version__
 
 try:
     from pretix.base.plugins import PluginConfig
