@@ -27,4 +27,3 @@ class PluginApp(PluginConfig):
         from . import signals  # NOQA
 
 
-default_app_config = 'pretix_vrpay.PluginApp'
