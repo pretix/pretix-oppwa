@@ -8,6 +8,7 @@ except ImportError:
 
 
 class PluginApp(PluginConfig):
+    default = True
     name = 'pretix_hobex'
     verbose_name = 'Hobex'
 

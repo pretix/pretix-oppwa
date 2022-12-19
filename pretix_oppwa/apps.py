@@ -8,6 +8,7 @@ except ImportError:
 
 
 class PluginApp(PluginConfig):
+    default = True
     name = 'pretix_oppwa'
     verbose_name = 'OPPWA payments'
 
