@@ -1,0 +1,10 @@
+# This file is used by the pretix team internally to coordinate releases of this plugin
+[plugin]
+package = "pretix-oppwa"
+modules = [ "pretix_oppwa", "pretix_hobex", "pretix_vrpay" ]
+marketplace_name = "oppwa"
+pypi = true
+repository_servers = { origin = "github.com", gitlab = "code.rami.io" }
+tag_targets = [ "origin", "gitlab" ]
+branch_targets = [ "origin/master", "gitlab/master", "f:gitlab/pypi" ]
+
