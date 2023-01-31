@@ -26,7 +26,7 @@ License
 -------
 
 
-Copyright 2020 Martin Gross
+Copyright 2023 rami.io GmbH
 
 Released under the terms of the Apache License 2.0
 

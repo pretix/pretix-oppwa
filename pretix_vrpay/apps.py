@@ -14,7 +14,7 @@ class PluginApp(PluginConfig):
 
     class PretixPluginMeta:
         name = gettext_lazy('VR Payment')
-        author = 'Martin Gross'
+        author = 'pretix Team'
         description = gettext_lazy('Accept payments through VR Payment, the payment service provider of '
                                    'Volksbanken Raiffeisenbanken.')
         visible = True

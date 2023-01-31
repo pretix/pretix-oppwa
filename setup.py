@@ -31,8 +31,8 @@ setup(
     description='This plugin allows you to use OPPWA based payment providers',
     long_description=long_description,
     url='https://github.com/pretix/pretix-oppwa/',
-    author='Martin Gross',
-    author_email='gross@rami.io',
+    author='pretix Team',
+    author_email='support@pretix.eu',
     license='Apache',
 
     install_requires=[],

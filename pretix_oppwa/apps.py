@@ -14,7 +14,7 @@ class PluginApp(PluginConfig):
 
     class PretixPluginMeta:
         name = gettext_lazy('OPPWA payments')
-        author = 'Martin Gross'
+        author = 'pretix Team'
         description = gettext_lazy('Easily connect to any payment provider using OPPWA-based technology.')
         visible = True
         version = __version__

@@ -14,7 +14,7 @@ class PluginApp(PluginConfig):
 
     class PretixPluginMeta:
         name = gettext_lazy('Hobex')
-        author = 'Martin Gross'
+        author = 'pretix Team'
         description = gettext_lazy('Accept payments through Hobex, a payment provider active in Austria, Germany, '
                                 'Italia, and more european coutnries.')
         picture = "pretix_hobex/logo.png"
