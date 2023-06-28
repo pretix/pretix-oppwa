@@ -2,9 +2,13 @@
 {% load i18n %}
 {% load eventurl %}
 {% load static %}
+{% load compress %}
 {% block title %}{% trans "Pay order" %}{% endblock %}
 {% block custom_header %}
     {{ block.super }}
+    {% compress js %}
+        <script type="text/javascript" src="{% static "pretix_oppwa/pretix-oppwa.js" %}"></script>
+    {% endcompress %}
     <script src="{{ checkouturl }}"></script>
 {% endblock %}
 {% block content %}
