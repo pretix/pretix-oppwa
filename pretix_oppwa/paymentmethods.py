@@ -1,13 +1,14 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .payment import OPPWAMethod, OPPWASettingsHolder, OPPWApaydirekt
+from .payment import OPPWAMethod, OPPWASettingsHolder, OPPWApaydirekt, OPPWAScheme, OPPWAGooglePay
 
 payment_methods = [
     {
         'identifier': 'scheme',
         'type': 'meta',
         'method': '',
+        'baseclass': OPPWAScheme,
         'public_name': _('Credit card'),
         'verbose_name': _('Credit card')
     }, {
@@ -134,6 +135,7 @@ payment_methods = [
         'identifier': 'googlepay',
         'type': 'scheme',
         'method': 'GOOGLEPAY',
+        'baseclass': OPPWAGooglePay,
         'public_name': _('Google Pay'),
         'verbose_name': _('Google Pay')
     }, {
@@ -788,6 +790,14 @@ def get_payment_method_classes(brand, payment_methods, baseclass, settingsholder
                 required=False,
             ))
         )
+        if "baseclass" in m:
+            for field in m["baseclass"].extra_form_fields:
+                settingsholder.payment_methods_settingsholder.append(
+                    (
+                        "method_{}_{}".format(m["method"], field[0]),
+                        field[1]
+                    )
+                )
 
         # All payment methods except the meta-Type "scheme" get their own EntityId Input
         # If there is only a single, unique EntityId, we skip this, too.

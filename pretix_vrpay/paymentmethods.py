@@ -27,6 +27,10 @@ supported_methods = [
     'DIRECTDEBIT_SEPA',
     'GIROPAY',
     'SOFORTUEBERWEISUNG',
+
+    # Wallets
+    'APPLEPAY',
+    'GOOGLEPAY',
 ]
 payment_methods = [item for item in payment_methods_repo if item.get('identifier').upper() in supported_methods]
 
