@@ -16,7 +16,7 @@ class PluginApp(PluginConfig):
         name = gettext_lazy('Hobex')
         author = 'pretix Team'
         description = gettext_lazy('Accept payments through Hobex, a payment provider active in Austria, Germany, '
-                                'Italia, and more european coutnries.')
+                                'Italia, and more european countries.')
         picture = "pretix_hobex/logo.png"
         visible = True
         version = __version__
