@@ -277,7 +277,14 @@ class OPPWAMethod(BasePaymentProvider):
             module = importlib.import_module(
                 __name__.replace('oppwa', self.identifier.split('_')[0]).replace('.payment', '.paymentmethods')
             )
-            return ' '.join(x['method'] for x in list(filter(lambda d: d['type'] == 'scheme', module.payment_methods)))
+            methods = [
+                x['method'] for x in list(filter(lambda d: d['type'] == 'scheme', module.payment_methods))
+                if self.get_setting('method_{}'.format(x['method']), as_type=bool)
+            ]
+
+            if 'GOOGLEPAY' in methods and not self.get_setting('method_GOOGLEPAY_merchantId'):
+                methods.remove('GOOGLEPAY')
+            return ' '.join(methods)
         else:
             return self.method
 
