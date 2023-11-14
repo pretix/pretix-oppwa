@@ -5,3 +5,12 @@
     justify-content: center;
     gap: 15px;
 }
+
+.wpwl-apple-pay-button {
+    padding: 1.5em 5em;
+    width: 100%
+}
+
+.wpwl-container {
+    flex-grow: 1
+}
