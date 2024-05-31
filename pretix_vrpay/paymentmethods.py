@@ -6,32 +6,34 @@ from .payment import OPPWAMethod, VRPaySettingsHolder
 
 supported_methods = [
     # Meta-Scheme
-    'SCHEME',
-
+    "SCHEME",
     # Scheme
-    'AMEX',
-    'DINERS',
-    'JCB',
-    'MASTER',
-    'VISA',
-
+    "AMEX",
+    "DINERS",
+    "JCB",
+    "MASTER",
+    "VISA",
     # Virtual Accounts
-    'ENTERPAY',
-    'KLARNA_PAYMENTS_PAYLATER',
-    'KLARNA_PAYMENTS_SLICEIT',
-    'PAYDIREKT',
-    'PAYPAL',
-    'RATENKAUF',
-
+    "ENTERPAY",
+    "KLARNA_PAYMENTS_PAYLATER",
+    "KLARNA_PAYMENTS_SLICEIT",
+    "PAYDIREKT",
+    "PAYPAL",
+    "RATENKAUF",
     # Bank Accounts
-    'DIRECTDEBIT_SEPA',
-    'GIROPAY',
-    'SOFORTUEBERWEISUNG',
-
+    "DIRECTDEBIT_SEPA",
+    "GIROPAY",
+    "SOFORTUEBERWEISUNG",
     # Wallets
-    'APPLEPAY',
-    'GOOGLEPAY',
+    "APPLEPAY",
+    "GOOGLEPAY",
 ]
-payment_methods = [item for item in payment_methods_repo if item.get('identifier').upper() in supported_methods]
+payment_methods = [
+    item
+    for item in payment_methods_repo
+    if item.get("identifier").upper() in supported_methods
+]
 
-payment_method_classes = get_payment_method_classes('VRPay', payment_methods, OPPWAMethod, VRPaySettingsHolder)
+payment_method_classes = get_payment_method_classes(
+    "VRPay", payment_methods, OPPWAMethod, VRPaySettingsHolder
+)

@@ -18,5 +18,9 @@ def register_payment_provider(sender, **kwargs):
 
 
 @receiver(signal=process_response, dispatch_uid="payment_hobex_middleware_resp")
-def signal_process_response(sender, request: HttpRequest, response: HttpResponse, **kwargs):
-    return wrapped_signal_process_response(HobexSettingsHolder, sender, request, response, **kwargs)
+def signal_process_response(
+    sender, request: HttpRequest, response: HttpResponse, **kwargs
+):
+    return wrapped_signal_process_response(
+        HobexSettingsHolder, sender, request, response, **kwargs
+    )

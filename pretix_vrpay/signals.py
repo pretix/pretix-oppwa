@@ -16,7 +16,11 @@ def register_payment_provider(sender, **kwargs):
 
     return payment_method_classes
 
-@receiver(signal=process_response, dispatch_uid="payment_vrpay_middleware_resp")
-def signal_process_response(sender, request: HttpRequest, response: HttpResponse, **kwargs):
-    return wrapped_signal_process_response(VRPaySettingsHolder, sender, request, response, **kwargs)
 
+@receiver(signal=process_response, dispatch_uid="payment_vrpay_middleware_resp")
+def signal_process_response(
+    sender, request: HttpRequest, response: HttpResponse, **kwargs
+):
+    return wrapped_signal_process_response(
+        VRPaySettingsHolder, sender, request, response, **kwargs
+    )

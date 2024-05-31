@@ -1,3 +1,3 @@
 from pretix_oppwa.urls import get_event_patterns
 
-event_patterns = get_event_patterns('hobex')
+event_patterns = get_event_patterns("hobex")

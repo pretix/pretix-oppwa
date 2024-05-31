@@ -18,15 +18,21 @@ from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
 class OPPWAOrderView:
     def dispatch(self, request, *args, **kwargs):
         try:
-            self.order = request.event.orders.get(code=kwargs['order'])
-            if hashlib.sha1(self.order.secret.lower().encode()).hexdigest() != kwargs['hash'].lower():
-                raise Http404('Unknown order')
+            self.order = request.event.orders.get(code=kwargs["order"])
+            if (
+                hashlib.sha1(self.order.secret.lower().encode()).hexdigest()
+                != kwargs["hash"].lower()
+            ):
+                raise Http404("Unknown order")
         except Order.DoesNotExist:
             # Do a hash comparison as well to harden timing attacks
-            if 'abcdefghijklmnopq'.lower() == hashlib.sha1('abcdefghijklmnopq'.encode()).hexdigest():
-                raise Http404('Unknown order')
+            if (
+                "abcdefghijklmnopq".lower()
+                == hashlib.sha1("abcdefghijklmnopq".encode()).hexdigest()
+            ):
+                raise Http404("Unknown order")
             else:
-                raise Http404('Unknown order')
+                raise Http404("Unknown order")
         return super().dispatch(request, *args, **kwargs)
 
     @cached_property
@@ -37,85 +43,116 @@ class OPPWAOrderView:
     def payment(self):
         return get_object_or_404(
             self.order.payments,
-            pk=self.kwargs['payment'],
-            provider__istartswith=self.kwargs['payment_provider'],
+            pk=self.kwargs["payment"],
+            provider__istartswith=self.kwargs["payment_provider"],
         )
 
     def _redirect_to_order(self):
-        return redirect(eventreverse(self.request.event, 'presale:event.order', kwargs={
-            'order': self.order.code,
-            'secret': self.order.secret
-        }) + ('?paid=yes' if self.order.status == Order.STATUS_PAID else ''))
+        return redirect(
+            eventreverse(
+                self.request.event,
+                "presale:event.order",
+                kwargs={"order": self.order.code, "secret": self.order.secret},
+            )
+            + ("?paid=yes" if self.order.status == Order.STATUS_PAID else "")
+        )
 
 
-@method_decorator(xframe_options_exempt, 'dispatch')
+@method_decorator(xframe_options_exempt, "dispatch")
 class PayView(OPPWAOrderView, TemplateView):
-    template_name = ''
+    template_name = ""
 
     def get(self, request, *args, **kwargs):
-        if self.payment.state not in [OrderPayment.PAYMENT_STATE_CREATED, OrderPayment.PAYMENT_STATE_PENDING]:
+        if self.payment.state not in [
+            OrderPayment.PAYMENT_STATE_CREATED,
+            OrderPayment.PAYMENT_STATE_PENDING,
+        ]:
             return self._redirect_to_order()
         else:
             ctx = self.get_context_data()
-            if ctx['checkouturl'] != 'fail':
-                r = render(request, 'pretix_oppwa/pay.html', ctx)
+            if ctx["checkouturl"] != "fail":
+                r = render(request, "pretix_oppwa/pay.html", ctx)
                 return r
             else:
                 return self._redirect_to_order()
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ident = self.pprov.identifier.split('_')[0]
+        ident = self.pprov.identifier.split("_")[0]
         try:
-            ctx['checkouturl'] = self.pprov.create_checkout(self.payment)
+            ctx["checkouturl"] = self.pprov.create_checkout(self.payment)
         except PaymentException:
-            ctx['checkouturl'] = 'fail'
+            ctx["checkouturl"] = "fail"
             messages.error(
                 self.request,
-                _('We had trouble communicating with the payment service. Please try again and get in touch with us if '
-                  'this problem persists.')
+                _(
+                    "We had trouble communicating with the payment service. Please try again and get in touch with us if "
+                    "this problem persists."
+                ),
             )
-        ctx['order'] = self.order
-        ctx['payment'] = self.payment
-        ctx['payment_hash'] = hashlib.sha1(self.payment.order.secret.lower().encode()).hexdigest()
-        ctx['brands'] = self.pprov.get_brands()
-        ctx['returnurl'] = build_absolute_uri(self.request.event, 'plugins:pretix_{}:return'.format(ident), kwargs={
-            'order': self.payment.order.code,
-            'payment': self.payment.pk,
-            'hash': hashlib.sha1(self.payment.order.secret.lower().encode()).hexdigest(),
-            'payment_provider': ident
-        })
-        ctx['ident'] = ident
-        ctx['entityId'] = self.pprov.get_entity_id(self.request.event.testmode)
-        if self.pprov.type == "meta" and self.pprov.get_setting('method_GOOGLEPAY_merchantId'):  # == scheme
-            ctx['googlepay_merchant_id'] = self.pprov.get_setting('method_GOOGLEPAY_merchantId')
+        ctx["order"] = self.order
+        ctx["payment"] = self.payment
+        ctx["payment_hash"] = hashlib.sha1(
+            self.payment.order.secret.lower().encode()
+        ).hexdigest()
+        ctx["brands"] = self.pprov.get_brands()
+        ctx["returnurl"] = build_absolute_uri(
+            self.request.event,
+            "plugins:pretix_{}:return".format(ident),
+            kwargs={
+                "order": self.payment.order.code,
+                "payment": self.payment.pk,
+                "hash": hashlib.sha1(
+                    self.payment.order.secret.lower().encode()
+                ).hexdigest(),
+                "payment_provider": ident,
+            },
+        )
+        ctx["ident"] = ident
+        ctx["entityId"] = self.pprov.get_entity_id(self.request.event.testmode)
+        if self.pprov.type == "meta" and self.pprov.get_setting(
+            "method_GOOGLEPAY_merchantId"
+        ):  # == scheme
+            ctx["googlepay_merchant_id"] = self.pprov.get_setting(
+                "method_GOOGLEPAY_merchantId"
+            )
         return ctx
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-@method_decorator(xframe_options_exempt, 'dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
+@method_decorator(xframe_options_exempt, "dispatch")
 class ReturnView(OPPWAOrderView, View):
-    viewsource = 'return_view'
+    viewsource = "return_view"
 
     def get(self, request, *args, **kwargs):
-        if 'resourcePath' not in request.GET:
-            messages.error(self.request, _('Sorry, we could not validate the payment result. Please try again or '
-                                           'contact the event organizer to check if your payment was successful.'))
+        if "resourcePath" not in request.GET:
+            messages.error(
+                self.request,
+                _(
+                    "Sorry, we could not validate the payment result. Please try again or "
+                    "contact the event organizer to check if your payment was successful."
+                ),
+            )
             return self._redirect_to_order()
 
         s = self.pprov._init_api(self.payment.order.testmode)
 
         try:
             r = s.get(
-                '{}{}?entityId={}'.format(
+                "{}{}?entityId={}".format(
                     self.pprov.get_endpoint_url(self.payment.order.testmode),
-                    request.GET['resourcePath'],
+                    request.GET["resourcePath"],
                     self.pprov.get_entity_id(self.payment.order.testmode),
                 )
             )
         except requests.exceptions.RequestException:
-            messages.error(self.request, _('Sorry, we could not validate the payment result. Please try again or '
-                                           'contact the event organizer to check if your payment was successful.'))
+            messages.error(
+                self.request,
+                _(
+                    "Sorry, we could not validate the payment result. Please try again or "
+                    "contact the event organizer to check if your payment was successful."
+                ),
+            )
             return self._redirect_to_order()
         else:
             try:
@@ -126,8 +163,7 @@ class ReturnView(OPPWAOrderView, View):
         return self._redirect_to_order()
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-@method_decorator(xframe_options_exempt, 'dispatch')
+@method_decorator(csrf_exempt, name="dispatch")
+@method_decorator(xframe_options_exempt, "dispatch")
 class NotifyView(ReturnView, OPPWAOrderView, View):
-    viewsource = 'notify_view'
-
+    viewsource = "notify_view"

@@ -6,27 +6,29 @@ from .payment import HobexSettingsHolder, OPPWAMethod
 
 supported_methods = [
     # Meta-Scheme
-    'SCHEME',
-
+    "SCHEME",
     # Scheme
-    'MASTER',
-    'VISA',
-    'AMEX',
-    'MASTERDEBIT',
-    'MAESTRO',
-    'VPAY',
-
+    "MASTER",
+    "VISA",
+    "AMEX",
+    "MASTERDEBIT",
+    "MAESTRO",
+    "VPAY",
     # Virtual Accounts
-    'PAYPAL',
-
+    "PAYPAL",
     # Bank Accounts
-    'SOFORTUEBERWEISUNG',
-    'DIRECTDEBIT_SEPA',
-
+    "SOFORTUEBERWEISUNG",
+    "DIRECTDEBIT_SEPA",
     # Wallets
-    'APPLEPAY',
-    'GOOGLEPAY',
+    "APPLEPAY",
+    "GOOGLEPAY",
 ]
-payment_methods = [item for item in payment_methods_repo if item.get('identifier').upper() in supported_methods]
+payment_methods = [
+    item
+    for item in payment_methods_repo
+    if item.get("identifier").upper() in supported_methods
+]
 
-payment_method_classes = get_payment_method_classes('Hobex', payment_methods, OPPWAMethod, HobexSettingsHolder)
+payment_method_classes = get_payment_method_classes(
+    "Hobex", payment_methods, OPPWAMethod, HobexSettingsHolder
+)

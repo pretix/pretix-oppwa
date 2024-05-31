@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy
-from pretix_oppwa import __version__, __compatibility__
+
+from pretix_oppwa import __compatibility__, __version__
 
 try:
     from pretix.base.plugins import PluginConfig
@@ -9,19 +10,19 @@ except ImportError:
 
 class PluginApp(PluginConfig):
     default = True
-    name = 'pretix_oppwa'
-    verbose_name = 'OPPWA payments'
+    name = "pretix_oppwa"
+    verbose_name = "OPPWA payments"
 
     class PretixPluginMeta:
-        name = gettext_lazy('OPPWA payments')
-        author = 'pretix Team'
-        description = gettext_lazy('Easily connect to any payment provider using OPPWA-based technology.')
+        name = gettext_lazy("OPPWA payments")
+        author = "pretix Team"
+        description = gettext_lazy(
+            "Easily connect to any payment provider using OPPWA-based technology."
+        )
         visible = True
         version = __version__
-        category = 'PAYMENT'
+        category = "PAYMENT"
         compatibility = __compatibility__
 
     def ready(self):
         from . import signals  # NOQA
-
-
