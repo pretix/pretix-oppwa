@@ -13,7 +13,7 @@ from django.template.loader import get_template
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _  # NoQA
 from pretix.base.models import Event, OrderPayment, OrderRefund
-from pretix.base.payment import BasePaymentProvider, PaymentException
+from pretix.base.payment import BasePaymentProvider, PaymentException, WalletQueries
 from pretix.base.settings import SettingsSandbox
 from pretix.multidomain.urlreverse import eventreverse, build_absolute_uri
 
@@ -179,6 +179,9 @@ class OPPWAMethod(BasePaymentProvider):
         else:
             return False
 
+    def get_setting(self, key, **kwargs):
+        return self.settings.get(key, **kwargs)
+
     def execute_payment(self, request: HttpRequest, payment: OrderPayment):
         ident = self.identifier.split('_')[0]
         return eventreverse(self.event, 'plugins:pretix_{}:pay'.format(ident), kwargs={
@@ -274,7 +277,14 @@ class OPPWAMethod(BasePaymentProvider):
             module = importlib.import_module(
                 __name__.replace('oppwa', self.identifier.split('_')[0]).replace('.payment', '.paymentmethods')
             )
-            return ' '.join(x['method'] for x in list(filter(lambda d: d['type'] == 'scheme', module.payment_methods)))
+            methods = [
+                x['method'] for x in list(filter(lambda d: d['type'] == 'scheme', module.payment_methods))
+                if self.get_setting('method_{}'.format(x['method']), as_type=bool)
+            ]
+
+            if 'GOOGLEPAY' in methods and not self.get_setting('method_GOOGLEPAY_merchantId'):
+                methods.remove('GOOGLEPAY')
+            return ' '.join(methods)
         else:
             return self.method
 
@@ -356,6 +366,8 @@ class OPPWAMethod(BasePaymentProvider):
 
 
 class OPPWApaydirekt(OPPWAMethod):
+    extra_form_fields = []
+
     def get_checkout_payload(self, payment: OrderPayment):
         payload = super().get_checkout_payload(payment)
         payload['shipping.street1'] = payment.order.invoice_address.street
@@ -370,3 +382,28 @@ class OPPWApaydirekt(OPPWAMethod):
 
     def is_allowed(self, request: HttpRequest, total: Decimal = None) -> bool:
         return super().is_allowed(request, total) and request.event.settings.invoice_address_required
+
+
+class OPPWAScheme(OPPWAMethod):
+    @property
+    def walletqueries(self):
+        wallets = []
+
+        if self.get_setting('method_APPLEPAY', as_type=bool):
+            wallets.append(WalletQueries.APPLEPAY)
+
+        if self.get_setting('method_GOOGLEPAY', as_type=bool) and self.get_setting('method_GOOGLEPAY_merchantId'):
+            wallets.append(WalletQueries.GOOGLEPAY)
+
+        return wallets
+
+
+class OPPWAGooglePay(OPPWAMethod):
+    extra_form_fields = [
+        ('merchantId',
+         forms.CharField(
+             label=_('Merchant ID'),
+             help_text=_('Attributed by Google after completion of their Integration Checklist'),
+             required=False,
+         )),
+    ]

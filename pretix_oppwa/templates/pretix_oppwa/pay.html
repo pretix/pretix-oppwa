@@ -2,10 +2,21 @@
 {% load i18n %}
 {% load eventurl %}
 {% load static %}
+{% load compress %}
 {% block title %}{% trans "Pay order" %}{% endblock %}
 {% block custom_header %}
     {{ block.super }}
     <script src="{{ checkouturl }}"></script>
+        {% compress js %}
+            <script type="text/javascript" src="{% static "pretix_oppwa/pretix-oppwa.js" %}"></script>
+        {% endcompress %}
+        {% compress css %}
+            <link type="text/css" rel="stylesheet" href="{% static "pretix_oppwa/pretix-oppwa.css" %}">
+        {% endcompress %}
+    {% if "GOOGLEPAY" in brands %}
+        <script type="text/plain" id="googlepay_gatewayMerchantId">{{ entityId }}</script>
+        <script type="text/plain" id="googlepay_merchantId">{{ googlepay_merchant_id }}</script>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <div class="panel panel-primary">
@@ -16,14 +27,16 @@
                 {% endblocktrans %}
             </h3>
         </div>
-        <div class="panel-body" id="paymentcontainer">
+        <div class="panel-body">
             <noscript>
                 <div class="alert alert-warning">
                     {% trans "Please turn on JavaScript." %}
                 </div>
             </noscript>
             <p>{% trans "Please use the button/form below to complete your payment." %}</p>
-            <form action="{{ returnurl }}" class="paymentWidgets" data-brands="{{ brands }}"></form>
+            <div id="paymentcontainer">
+                <form action="{{ returnurl }}" class="paymentWidgets" data-brands="{{ brands }}"></form>
+            </div>
         </div>
     </div>
     <div class="row checkout-button-row">

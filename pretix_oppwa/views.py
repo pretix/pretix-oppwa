@@ -86,6 +86,9 @@ class PayView(OPPWAOrderView, TemplateView):
             'payment_provider': ident
         })
         ctx['ident'] = ident
+        ctx['entityId'] = self.pprov.get_entity_id(self.request.event.testmode)
+        if self.pprov.type == "meta" and self.pprov.get_setting('method_GOOGLEPAY_merchantId'):  # == scheme
+            ctx['googlepay_merchant_id'] = self.pprov.get_setting('method_GOOGLEPAY_merchantId')
         return ctx
 
 

@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy
-from pretix_oppwa import __version__
+from pretix_oppwa import __version__, __compatibility__
 
 try:
     from pretix.base.plugins import PluginConfig
@@ -21,7 +21,7 @@ class PluginApp(PluginConfig):
         visible = True
         version = __version__
         category = 'PAYMENT'
-        compatibility = "pretix>=3.10.0.dev0"
+        compatibility = __compatibility__
 
     def ready(self):
         from . import signals  # NOQA
