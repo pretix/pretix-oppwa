@@ -486,7 +486,7 @@ class OPPWAScheme(OPPWAMethod):
         return wallets
 
     def get_checkout_payload(self, payment: OrderPayment):
-        data = super().get_checkout_payloFad(payment)
+        data = super().get_checkout_payload(payment)
         data['customer.email'] = payment.order.email
 
         return data
