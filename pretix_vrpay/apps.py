@@ -23,6 +23,7 @@ class PluginApp(PluginConfig):
         visible = True
         picture = "pretix_vrpay/logo.svg"
         version = __version__
+        compatibility = "pretix>=2024.4.0"
         category = "PAYMENT"
         compatibility = __compatibility__
 

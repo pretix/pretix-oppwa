@@ -23,6 +23,7 @@ class PluginApp(PluginConfig):
         picture = "pretix_hobex/logo.png"
         visible = True
         version = __version__
+        compatibility = "pretix>=2024.4.0"
         category = "PAYMENT"
         compatibility = __compatibility__
 
