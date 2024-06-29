@@ -7,7 +7,7 @@
 {% block custom_header %}
     {{ block.super }}
     <script src="{{ checkouturl }}"></script>
-        {% compress js %}
+        {% compress js file oppwa %}
             <script type="text/javascript" src="{% static "pretix_oppwa/pretix-oppwa.js" %}"></script>
         {% endcompress %}
         {% compress css %}
