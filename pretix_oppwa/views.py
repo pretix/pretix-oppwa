@@ -62,6 +62,10 @@ class OPPWAOrderView:
 class PayView(OPPWAOrderView, TemplateView):
     template_name = ""
 
+    def dispatch(self, request, *args, **kwargs):
+        self.request.pci_dss_payment_page = True
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         if self.payment.state not in [
             OrderPayment.PAYMENT_STATE_CREATED,
