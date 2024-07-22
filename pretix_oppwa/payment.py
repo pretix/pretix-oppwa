@@ -7,6 +7,7 @@ import requests
 from collections import OrderedDict
 from decimal import Decimal
 from django import forms
+from django.core import signing
 from django.db import transaction
 from django.http import HttpRequest
 from django.template.loader import get_template
@@ -443,6 +444,34 @@ class OPPWAMethod(BasePaymentProvider):
         else:
             raise PaymentException(_("We had trouble processing your transaction."))
 
+    def redirect(self, request, url):
+        ident = self.identifier.split("_")[0]
+
+        if request.session.get("iframe_session", False):
+            return (
+                build_absolute_uri(
+                    request.event,
+                    "plugins:pretix_{}:redirect".format(ident),
+                    kwargs={
+                        "payment_provider": ident,
+                    }
+                )
+                + "?data="
+                + signing.dumps(
+                    {
+                        "url": url,
+                        "session": {
+                            "payment_{}_order_secret".format(ident): request.session[
+                                "payment_{}_order_secret".format(ident)
+                            ],
+                        },
+                    },
+                    salt="safe-redirect",
+                )
+            )
+        else:
+            return str(url)
+
 
 class OPPWApaydirekt(OPPWAMethod):
     extra_form_fields = []
@@ -505,3 +534,13 @@ class OPPWAGooglePay(OPPWAMethod):
             ),
         ),
     ]
+
+
+class OPPWAPayPal(OPPWAMethod):
+    extra_form_fields = []
+
+    def execute_payment(self, request: HttpRequest, payment: OrderPayment):
+        ident = self.identifier.split("_")[0]
+        request.session["payment_{}_order_secret".format(ident)] = payment.order.secret
+
+        return self.redirect(request, super().execute_payment(request, payment))

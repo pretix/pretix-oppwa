@@ -1,7 +1,10 @@
 import hashlib
+import urllib.parse
+
 import requests
 from django.contrib import messages
-from django.http import Http404
+from django.core import signing
+from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
@@ -167,3 +170,38 @@ class ReturnView(OPPWAOrderView, View):
 @method_decorator(xframe_options_exempt, "dispatch")
 class NotifyView(ReturnView, OPPWAOrderView, View):
     viewsource = "notify_view"
+
+
+@xframe_options_exempt
+def redirect_view(request, *args, **kwargs):
+    try:
+        data = signing.loads(request.GET.get("data", ""), salt="safe-redirect")
+    except signing.BadSignature:
+        return HttpResponseBadRequest("Invalid parameter")
+
+    if "go" in request.GET:
+        if "session" in data:
+            for k, v in data["session"].items():
+                request.session[k] = v
+        return redirect(data["url"])
+    else:
+        ident = kwargs.get("payment_provider", "oppwa")
+        params = request.GET.copy()
+        params["go"] = "1"
+        r = render(
+            request,
+            "pretix_oppwa/redirect.html",
+            {
+                "url": build_absolute_uri(
+                    request.event,
+                    "plugins:pretix_{}:redirect".format(ident),
+                    kwargs={
+                        "payment_provider": ident,
+                    }
+                )
+                + "?"
+                + urllib.parse.urlencode(params),
+            },
+        )
+        r._csp_ignore = True
+        return r

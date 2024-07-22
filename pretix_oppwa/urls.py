@@ -1,6 +1,6 @@
 from django.urls import include, path, re_path
 
-from .views import NotifyView, PayView, ReturnView
+from .views import NotifyView, PayView, ReturnView, redirect_view
 
 
 def get_event_patterns(brand):
@@ -18,6 +18,11 @@ def get_event_patterns(brand):
                         "return/<str:order>/<str:hash>/<str:payment>/",
                         ReturnView.as_view(),
                         name="return",
+                    ),
+                    path(
+                        "redirect/",
+                        redirect_view,
+                        name="redirect"
                     ),
                     path(
                         "notify/<str:order>/<str:hash>/<str:payment>/",

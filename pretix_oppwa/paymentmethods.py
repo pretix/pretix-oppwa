@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .payment import (
     OPPWAGooglePay, OPPWAMethod, OPPWApaydirekt, OPPWAScheme,
-    OPPWASettingsHolder,
+    OPPWASettingsHolder, OPPWAPayPal,
 )
 
 payment_methods = [
@@ -633,6 +633,7 @@ payment_methods = [
         "method": "PAYPAL",
         "public_name": _("PayPal"),
         "verbose_name": _("PayPal"),
+        "baseclass": OPPWAPayPal,
     },
     {
         "identifier": "paysafecard",
