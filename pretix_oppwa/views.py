@@ -1,7 +1,6 @@
 import hashlib
-import urllib.parse
-
 import requests
+import urllib.parse
 from django.contrib import messages
 from django.core import signing
 from django.http import Http404, HttpResponseBadRequest

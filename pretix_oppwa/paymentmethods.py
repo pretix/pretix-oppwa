@@ -2,8 +2,8 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from .payment import (
-    OPPWAGooglePay, OPPWAMethod, OPPWApaydirekt, OPPWAScheme,
-    OPPWASettingsHolder, OPPWAPayPal,
+    OPPWAGooglePay, OPPWAMethod, OPPWApaydirekt, OPPWAPayPal, OPPWAScheme,
+    OPPWASettingsHolder,
 )
 
 payment_methods = [
