@@ -263,6 +263,13 @@ class OPPWAMethod(BasePaymentProvider):
 
         self.process_result(refund, payment_info, "execute_refund")
 
+    def statement_descriptor(self, payment, length=127):
+        return '{event}-{code} {eventname}'.format(
+            event=self.event.slug.upper(),
+            code=payment.order.code,
+            eventname=re.sub('[^a-zA-Z0-9 ]', '', str(self.event.name))
+        )[:length]
+
     def get_checkout_payload(self, payment: OrderPayment):
         ident = self.identifier.split("_")[0]
 
@@ -276,6 +283,7 @@ class OPPWAMethod(BasePaymentProvider):
                 code=payment.order.code,
                 payment=payment.local_id,
             ),
+            "descriptor": self.statement_descriptor(payment),
             # Ordinarily we would pass the type of payment method - or in the case of schemes all the allowed ones -
             # but somehow OPPWA only allows us to pass a single payment method. So we will not set it for credit cards.
             # 'paymentBrand': None if self.type == 'meta' else self.method
