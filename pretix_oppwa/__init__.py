@@ -1,2 +1,2 @@
 __version__ = "1.2.1"
-__compatibility__ = "pretix>=2023.7.0.dev0"
+__compatibility__ = "pretix>=pretix>=2024.4.0"
