@@ -598,6 +598,7 @@ payment_methods = [
                 )
             )
         ),
+        "retired": True,
     },
     {
         "identifier": "paynet",
@@ -840,6 +841,7 @@ payment_methods = [
                 '"giropay (formerly paydirekt)" instead.'
             )
         ),
+        "retired": True,
     },
     {
         "identifier": "ideal",
@@ -912,6 +914,9 @@ def get_payment_method_classes(
 ):
     settingsholder.payment_methods_settingsholder = []
     for m in payment_methods:
+        if m.get("retired", False):
+            continue
+
         # We do not want meta methods like "scheme" in the settings holder
         if m["type"] == "meta":
             continue
@@ -985,6 +990,7 @@ def get_payment_method_classes(
                 "public_name": m["public_name"],
                 "method": m["method"],
                 "type": m["type"],
+                "retired": m.get("retired", False),
             },
         )
         for m in payment_methods

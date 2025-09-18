@@ -85,6 +85,7 @@ class OPPWAMethod(BasePaymentProvider):
     identifier = ""
     method = ""
     type = ""
+    retired = False
 
     def __init__(self, event: Event):
         super().__init__(event)
@@ -96,6 +97,9 @@ class OPPWAMethod(BasePaymentProvider):
 
     @property
     def is_enabled(self) -> bool:
+        if self.retired:
+            return False
+
         if self.type == "meta":
             module = importlib.import_module(
                 __name__.replace("oppwa", self.identifier.split("_")[0]).replace(
