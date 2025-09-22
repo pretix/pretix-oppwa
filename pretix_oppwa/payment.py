@@ -485,6 +485,14 @@ class OPPWAMethod(BasePaymentProvider):
             return str(url)
 
 
+class OPPWANoRefundMethod(OPPWAMethod):
+    def payment_refund_supported(self, payment: OrderPayment) -> bool:
+        return False
+
+    def payment_partial_refund_supported(self, payment: OrderPayment) -> bool:
+        return False
+
+
 class OPPWApaydirekt(OPPWAMethod):
     extra_form_fields = []
 
