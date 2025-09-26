@@ -13,7 +13,7 @@ from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _  # NoQA
-from pretix.base.models import Event, OrderPayment, OrderRefund
+from pretix.base.models import Event, OrderPayment, OrderRefund, Order
 from pretix.base.payment import (
     BasePaymentProvider, PaymentException, WalletQueries,
 )
@@ -203,6 +203,11 @@ class OPPWAMethod(BasePaymentProvider):
 
     def is_allowed(self, request: HttpRequest, total: Decimal = None) -> bool:
         global_allowed = super().is_allowed(request, total)
+
+        return global_allowed and self.get_entity_id(request.event.testmode)
+
+    def order_change_allowed(self, order: Order, request: HttpRequest = None) -> bool:
+        global_allowed = super().order_change_allowed(order)
 
         return global_allowed and self.get_entity_id(request.event.testmode)
 
@@ -517,6 +522,12 @@ class OPPWApaydirekt(OPPWAMethod):
     def is_allowed(self, request: HttpRequest, total: Decimal = None) -> bool:
         return (
             super().is_allowed(request, total)
+            and request.event.settings.invoice_address_required
+        )
+
+    def order_change_allowed(self, order: Order, request: HttpRequest = None) -> bool:
+        return (
+            super().order_change_allowed(order, request)
             and request.event.settings.invoice_address_required
         )
 
