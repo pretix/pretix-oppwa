@@ -86,6 +86,7 @@ class OPPWAMethod(BasePaymentProvider):
     method = ""
     type = ""
     retired = False
+    additional_head = ""
 
     def __init__(self, event: Event):
         super().__init__(event)

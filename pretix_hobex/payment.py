@@ -1,4 +1,6 @@
 import logging
+
+from django.template.loader import get_template
 from django.utils.translation import gettext_lazy as _
 from pretix.base.models import OrderPayment
 
@@ -29,3 +31,7 @@ class OPPWAMethod(SuperOPPWAMethod):
         data["merchantTransactionId"] = str(payment.order.pk).zfill(20)
 
         return data
+
+    @property
+    def additional_head(self):
+        return get_template('pretix_hobex/pay_head.html').render()

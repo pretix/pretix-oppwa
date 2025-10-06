@@ -22,6 +22,7 @@ supported_methods = [
     # Wallets
     "APPLEPAY",
     "GOOGLEPAY",
+    "ACI_INSTANTPAY",
 ]
 payment_methods = [
     item

@@ -16,6 +16,13 @@ payment_methods = [
         "verbose_name": _("Credit card"),
     },
     {
+        "identifier": "aci_instantpay",
+        "type": "other",
+        "method": "ACI_INSTANTPAY",
+        "public_name": _("Pay By Bank"),
+        "verbose_name": _("Pay By Bank/ACI Instant Pay"),
+    },
+    {
         "identifier": "affirm",
         "type": "other",
         "method": "AFFIRM",
@@ -899,6 +906,7 @@ payment_methods = [
         "baseclass": OPPWANoRefundMethod,
         "public_name": _("Sofortüberweisung"),
         "verbose_name": _("Sofortüberweisung"),
+        "retired": True,
     },
     {
         "identifier": "trustpay_va",

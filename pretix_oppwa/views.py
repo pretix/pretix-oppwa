@@ -122,6 +122,7 @@ class PayView(OPPWAOrderView, TemplateView):
             ctx["googlepay_merchant_id"] = self.pprov.get_setting(
                 "method_GOOGLEPAY_merchantId"
             )
+        ctx["additional_head"] = self.pprov.additional_head or ""
         return ctx
 
 
