@@ -208,7 +208,7 @@ class OPPWAMethod(BasePaymentProvider):
         return global_allowed and self.get_entity_id(request.event.testmode)
 
     def order_change_allowed(self, order: Order, request: HttpRequest = None) -> bool:
-        global_allowed = super().order_change_allowed(order)
+        global_allowed = super().order_change_allowed(order, request)
 
         return global_allowed and self.get_entity_id(request.event.testmode)
 
