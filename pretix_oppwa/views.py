@@ -161,11 +161,21 @@ class ReturnView(OPPWAOrderView, View):
                 ),
             )
             return self._redirect_to_order()
-        else:
-            try:
-                self.pprov.process_result(self.payment, r.json(), self.viewsource)
-            except PaymentException as e:
-                messages.error(self.request, str(e))
+
+        if r.json().get('merchantTransactionId') != self.pprov.get_merchant_transaction_id(self.payment):
+            messages.error(
+                self.request,
+                _(
+                    "Sorry, we could not validate the payment result. Please try again or "
+                    "contact the event organizer to check if your payment was successful."
+                ),
+            )
+            return self._redirect_to_order()
+
+        try:
+            self.pprov.process_result(self.payment, r.json(), self.viewsource)
+        except PaymentException as e:
+            messages.error(self.request, str(e))
 
         return self._redirect_to_order()
 
