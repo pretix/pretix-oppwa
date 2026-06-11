@@ -190,9 +190,6 @@ class OPPWAMethod(BasePaymentProvider):
             "order": payment.order,
             "payment": payment,
             "payment_info": payment_info,
-            "payment_hash": hashlib.sha1(
-                payment.order.secret.lower().encode()
-            ).hexdigest(),
         }
         return template.render(ctx)
 
@@ -235,7 +232,7 @@ class OPPWAMethod(BasePaymentProvider):
                 "payment_provider": ident,
                 "order": payment.order.code,
                 "payment": payment.pk,
-                "hash": hashlib.sha1(payment.order.secret.lower().encode()).hexdigest(),
+                "hash": self.payment.order.tagged_secret("plugins:pretix_{}:pay".format(ident)),
             },
         )
 
@@ -305,9 +302,7 @@ class OPPWAMethod(BasePaymentProvider):
                 kwargs={
                     "order": payment.order.code,
                     "payment": payment.pk,
-                    "hash": hashlib.sha1(
-                        payment.order.secret.lower().encode()
-                    ).hexdigest(),
+                    "hash": self.payment.order.tagged_secret("plugins:pretix_{}:notify".format(ident)),
                     "payment_provider": ident,
                 },
             ),

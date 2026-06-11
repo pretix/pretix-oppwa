@@ -19,22 +19,13 @@ from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
 
 class OPPWAOrderView:
     def dispatch(self, request, *args, **kwargs):
+        url = request.resolver_match
         try:
-            self.order = request.event.orders.get(code=kwargs["order"])
-            if (
-                hashlib.sha1(self.order.secret.lower().encode()).hexdigest()
-                != kwargs["hash"].lower()
-            ):
-                raise Http404("Unknown order")
+            self.order = request.event.orders.get_with_secret_check(
+                code=kwargs["order"], received_secret=kwargs["hash"], tag=f"{url.namespace}:{url.url_name}"
+            )
         except Order.DoesNotExist:
-            # Do a hash comparison as well to harden timing attacks
-            if (
-                "abcdefghijklmnopq".lower()
-                == hashlib.sha1("abcdefghijklmnopq".encode()).hexdigest()
-            ):
-                raise Http404("Unknown order")
-            else:
-                raise Http404("Unknown order")
+            raise Http404("")
         return super().dispatch(request, *args, **kwargs)
 
     @cached_property
@@ -98,9 +89,6 @@ class PayView(OPPWAOrderView, TemplateView):
             )
         ctx["order"] = self.order
         ctx["payment"] = self.payment
-        ctx["payment_hash"] = hashlib.sha1(
-            self.payment.order.secret.lower().encode()
-        ).hexdigest()
         ctx["brands"] = self.pprov.get_brands()
         ctx["returnurl"] = build_absolute_uri(
             self.request.event,
@@ -108,9 +96,7 @@ class PayView(OPPWAOrderView, TemplateView):
             kwargs={
                 "order": self.payment.order.code,
                 "payment": self.payment.pk,
-                "hash": hashlib.sha1(
-                    self.payment.order.secret.lower().encode()
-                ).hexdigest(),
+                "hash": self.payment.order.tagged_secret("plugins:pretix_{}:return".format(ident)),
                 "payment_provider": ident,
             },
         )
