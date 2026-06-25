@@ -232,7 +232,7 @@ class OPPWAMethod(BasePaymentProvider):
                 "payment_provider": ident,
                 "order": payment.order.code,
                 "payment": payment.pk,
-                "hash": self.payment.order.tagged_secret("plugins:pretix_{}:pay".format(ident)),
+                "hash": payment.order.tagged_secret("plugins:pretix_{}:pay".format(ident)),
             },
         )
 
@@ -302,7 +302,7 @@ class OPPWAMethod(BasePaymentProvider):
                 kwargs={
                     "order": payment.order.code,
                     "payment": payment.pk,
-                    "hash": self.payment.order.tagged_secret("plugins:pretix_{}:notify".format(ident)),
+                    "hash": payment.order.tagged_secret("plugins:pretix_{}:notify".format(ident)),
                     "payment_provider": ident,
                 },
             ),
