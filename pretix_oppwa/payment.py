@@ -13,7 +13,7 @@ from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _  # NoQA
-from pretix.base.models import Event, OrderPayment, OrderRefund, Order
+from pretix.base.models import Event, Order, OrderPayment, OrderRefund
 from pretix.base.payment import (
     BasePaymentProvider, PaymentException, WalletQueries,
 )
@@ -280,6 +280,12 @@ class OPPWAMethod(BasePaymentProvider):
             eventname=re.sub('[^a-zA-Z0-9 ]', '', str(self.event.name))
         )[:length]
 
+    def get_merchant_transaction_id(self, payment):
+        return "{event}-{payment}".format(
+            event=self.event.slug.upper(),
+            payment=payment.full_id,
+        )
+
     def get_checkout_payload(self, payment: OrderPayment):
         ident = self.identifier.split("_")[0]
 
@@ -288,11 +294,7 @@ class OPPWAMethod(BasePaymentProvider):
             "amount": str(payment.amount),
             "currency": self.event.currency,
             "paymentType": "DB",
-            "merchantTransactionId": "{event}-{code}-P-{payment}".format(
-                event=self.event.slug.upper(),
-                code=payment.order.code,
-                payment=payment.local_id,
-            ),
+            "merchantTransactionId": self.get_merchant_transaction_id(payment),
             "descriptor": self.statement_descriptor(payment),
             # Ordinarily we would pass the type of payment method - or in the case of schemes all the allowed ones -
             # but somehow OPPWA only allows us to pass a single payment method. So we will not set it for credit cards.
