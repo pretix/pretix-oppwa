@@ -26,7 +26,7 @@ class OPPWAMethod(SuperOPPWAMethod):
         # For scheme-payments, Hobex only supports a 20 digit transaction ID, deviating from the OPPWA-standard.
         # For ease of use, we will not only follow this for scheme-transactions but for all transactions processed
         # through Hobex.
-        return str(payment.order.pk).zfill(20)
+        return str(payment.pk).zfill(20)
 
     @property
     def additional_head(self):
