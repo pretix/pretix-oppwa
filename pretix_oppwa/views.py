@@ -1,4 +1,5 @@
-import hashlib
+import logging
+
 import requests
 import urllib.parse
 from django.contrib import messages
@@ -15,6 +16,9 @@ from django.views.generic import TemplateView
 from pretix.base.models import Order, OrderPayment
 from pretix.base.payment import PaymentException
 from pretix.multidomain.urlreverse import build_absolute_uri, eventreverse
+
+
+logger = logging.getLogger(__name__)
 
 
 class OPPWAOrderView:
@@ -139,6 +143,7 @@ class ReturnView(OPPWAOrderView, View):
                 )
             )
         except requests.exceptions.RequestException:
+            logger.exception("Could not contact Hobex")
             messages.error(
                 self.request,
                 _(
@@ -148,7 +153,10 @@ class ReturnView(OPPWAOrderView, View):
             )
             return self._redirect_to_order()
 
-        if r.json().get('merchantTransactionId') != self.pprov.get_merchant_transaction_id(self.payment):
+        d = r.json()
+        expected_id = self.pprov.get_merchant_transaction_id(self.payment)
+        if d.get('merchantTransactionId') != expected_id:
+            logger.error(f"Merchant transaction mismatch on {expected_id}: {d!r}")
             messages.error(
                 self.request,
                 _(
@@ -161,6 +169,7 @@ class ReturnView(OPPWAOrderView, View):
         try:
             self.pprov.process_result(self.payment, r.json(), self.viewsource)
         except PaymentException as e:
+            logger.exception("Could not process payment")
             messages.error(self.request, str(e))
 
         return self._redirect_to_order()
