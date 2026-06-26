@@ -318,6 +318,8 @@ class OPPWAMethod(BasePaymentProvider):
                 data=data,
             )
             r.raise_for_status()
+            payment.info = json.dumps(r.json())
+            payment.save()
         except requests.exceptions.HTTPError as e:
             logger.exception("Error on creating payment: " + str(e))
             payment.info = json.dumps(r.json())
