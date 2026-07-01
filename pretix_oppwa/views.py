@@ -189,17 +189,18 @@ class NotifyView(ReturnView, OPPWAOrderView, View):
 @xframe_options_exempt
 def redirect_view(request, *args, **kwargs):
     try:
-        data = signing.loads(request.GET.get("data", ""), salt="safe-redirect")
+        data = signing.loads(request.GET.get("data", ""), salt="plugins:oppwa:redirect:safe-redirect-data")
     except signing.BadSignature:
         return HttpResponseBadRequest("Invalid parameter")
 
+    ident = kwargs.get("payment_provider", "oppwa")
     if "go" in request.GET:
         if "session" in data:
             for k, v in data["session"].items():
-                request.session[k] = v
+                if k.startswith("payment_{}_".format(ident)):
+                    request.session[k] = v
         return redirect(data["url"])
     else:
-        ident = kwargs.get("payment_provider", "oppwa")
         params = request.GET.copy()
         params["go"] = "1"
         r = render(

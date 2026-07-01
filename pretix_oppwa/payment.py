@@ -483,7 +483,7 @@ class OPPWAMethod(BasePaymentProvider):
                             ],
                         },
                     },
-                    salt="safe-redirect",
+                    salt="plugins:oppwa:redirect:safe-redirect-data",
                 )
             )
         else:
