@@ -1,4 +1,5 @@
 import logging
+import re
 
 import requests
 import urllib.parse
@@ -122,7 +123,11 @@ class ReturnView(OPPWAOrderView, View):
     viewsource = "return_view"
 
     def get(self, request, *args, **kwargs):
-        if "resourcePath" not in request.GET:
+        path = request.GET.get("resourcePath")
+        valid_regex = re.compile("^/v[0-9]+/checkouts/[a-zA-Z0-9.-]+/payment$")
+
+        if not path or not valid_regex.match(path):
+            logger.error(f"Illegal resourcePath: {path}")
             messages.error(
                 self.request,
                 _(
@@ -138,7 +143,7 @@ class ReturnView(OPPWAOrderView, View):
             r = s.get(
                 "{}{}?entityId={}".format(
                     self.pprov.get_endpoint_url(self.payment.order.testmode),
-                    request.GET["resourcePath"],
+                    path,
                     self.pprov.get_entity_id(self.payment.order.testmode),
                 )
             )
