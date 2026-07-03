@@ -13,6 +13,8 @@ from django.http import HttpRequest
 from django.template.loader import get_template
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _  # NoQA
+
+from pretix.base.forms import SecretKeySettingsField
 from pretix.base.models import Event, Order, OrderPayment, OrderRefund
 from pretix.base.payment import (
     BasePaymentProvider, PaymentException, WalletQueries,
@@ -41,7 +43,7 @@ class OPPWASettingsHolder(BasePaymentProvider):
         fields = [
             (
                 "access_token",
-                forms.CharField(
+                SecretKeySettingsField(
                     label=_("Access Token"),
                 ),
             ),
